@@ -1,0 +1,9 @@
+<h1><%= @user.name %></h1>
+<br>
+<%= link "Listing Users", to: user_path(@conn, :index) %> / @<%= @user.username %>
+<br>
+<br>
+
+<div>
+  Information about <b><%= first_name(@user) %></b>.
+</div>
