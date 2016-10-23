@@ -5,5 +5,5 @@
 <br>
 
 <div>
-  Information about <b><%= first_name(@user) %></b>.
+  Information about <%= render "user.html", user: @user %>.
 </div>
