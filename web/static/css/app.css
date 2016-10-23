@@ -1,1 +1,7 @@
 /* This file is for your main application css. */
+
+.table>tbody>tr>td b {
+  display: inline-flex;
+  overflow: hidden;
+  max-width: 50vw;
+}
