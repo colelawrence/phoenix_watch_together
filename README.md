@@ -1,5 +1,29 @@
 # Rumbl
 
+## Windows
+
+Start postgresql server using:
+
+```shell
+pg_ctl start -D C:\Users\Cole\.postgresql\data
+pg_ctl status -D C:\Users\Cole\.postgresql\data
+```
+
+More commands on https://www.postgresql.org/docs/9.6/static/app-pg-ctl.html
+
+### Compiling for Windows
+
+> We had issues trying to compile using the latest Visual Studio, so we use VS12 here.
+
+```shell
+# Initialize environment for VCBuild tools
+"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" amd64
+# Compile dependencies
+mix compile
+```
+
+## Starting App
+
 To start your Phoenix app:
 
   * Install dependencies with `mix deps.get`
