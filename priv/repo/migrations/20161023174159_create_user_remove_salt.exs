@@ -1,4 +1,4 @@
-defmodule Rumbl.Repo.Migrations.CreateUser do
+defmodule Rumbl.Repo.Migrations.CreateUserRemoveSalt do
   use Ecto.Migration
 
   def change do

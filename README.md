@@ -22,6 +22,19 @@ More commands on https://www.postgresql.org/docs/9.6/static/app-pg-ctl.html
 mix compile
 ```
 
+## Mac OSX
+
+```shell
+brew install postgres
+# start detached postgres database
+pg_ctl -D /usr/local/var/postgres start
+
+# add default postgres user
+createuser -s postgres
+
+# Proceed to "Starting App"
+```
+
 ## Starting App
 
 To start your Phoenix app:
@@ -34,6 +47,13 @@ To start your Phoenix app:
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+
+### Debugging Notes
+
+```sh
+# run app
+iex -S mix phoenix.server
+```
 
 ## Learn more
 
