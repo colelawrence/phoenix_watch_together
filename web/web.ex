@@ -36,6 +36,12 @@ defmodule Rumbl.Web do
 
       import Rumbl.Router.Helpers
       import Rumbl.Gettext
+
+      # Make authenticate_user available to all that
+      # use Rumbl.Web, :controller
+      # and do a
+      # plug :authenticae_user when action in [:index, :show]
+      import Rumbl.Auth, only: [authenticate_user: 2]
     end
   end
 
@@ -58,6 +64,11 @@ defmodule Rumbl.Web do
   def router do
     quote do
       use Phoenix.Router
+
+      # Import so other modules will get this import when
+      # they do a
+      # use Rumbl.Web, :router
+      import Rumbl.Auth, only: [authenticate_user: 2]
     end
   end
 
