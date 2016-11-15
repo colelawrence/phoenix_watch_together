@@ -5,3 +5,17 @@
   overflow: hidden;
   max-width: 50vw;
 }
+
+
+footer {
+  background: #f5f5f5;
+  padding: 16px 8px;
+  margin-top: 20px;
+  border-radius: 4px;
+}
+.comma-separated::after {
+  content: ',';
+}
+.comma-separated:last-child::after {
+  content: '';
+}
