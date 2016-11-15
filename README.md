@@ -1,5 +1,7 @@
 # Rumbl
 
+[![Build Status](https://travis-ci.org/ZombieHippie/phoenix-rumbl-tutorial.svg?branch=master)](https://travis-ci.org/ZombieHippie/phoenix-rumbl-tutorial)
+
 ## Windows
 
 Start postgresql server using:
