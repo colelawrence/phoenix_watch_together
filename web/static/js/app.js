@@ -19,3 +19,15 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+import { Player } from './player.js'
+
+const video = document.getElementById("video")
+
+if (video) {
+  const player = new Player(video.id, video.dataset.playerId, () => {
+    console.log("Player ready!")
+  })
+} else {
+  console.log("No video found on page.")
+}
