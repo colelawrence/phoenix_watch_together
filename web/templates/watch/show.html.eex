@@ -1,0 +1,46 @@
+
+<h2><%= @video.title %></h2>
+<%= if @video.user_id == @current_user.id do %>
+<div class="row">
+  <style>
+    .owner-actions {
+      padding: 4px; text-align: right;
+      color: dodgerblue;
+      border: 2px solid;
+      border-radius: 4px; }
+  </style>
+  <div class="col-sm-12">
+    <div class="owner-actions">
+      <span style="float: left;margin-left: 4px;">Owner settings</span>
+      <%= link "Show", to: video_path(@conn, :show, @video), class: "btn btn-default btn-xs" %>
+      <%= link "Edit", to: video_path(@conn, :edit, @video), class: "btn btn-default btn-xs" %>
+    </div>
+  </div>
+</div>
+<% end %>
+<div class="row">
+  <div class="col-sm-7">
+    <%= content_tag :div, id: "video",
+        data: [id: @video.id, player_id: player_id(@video)] do end %>
+  </div>
+  <div class="col-sm-5">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Annotations</h3>
+      </div>
+      <div id="msg-container" class="panel-body annotations"></div>
+      <div class="panel-footer">
+        <textarea id="msg-input" rows="3" class="form-control"
+            placeholder="Comment..."></textarea>
+        <button id="msg-submit" class="btn btn-primary form-control" type="submit">
+          Post
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<td><%= @video.user_id %></td>
+<td><%= @video.url %></td>
+<td><%= @video.title %></td>
+<td><%= @video.description %></td>
+

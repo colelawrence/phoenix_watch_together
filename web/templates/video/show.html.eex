@@ -23,5 +23,8 @@
   </li>
 </ul>
 
+<%= link "Watch", to: watch_path(@conn, :show, @video) %>
+&nbsp;
 <%= link "Edit", to: video_path(@conn, :edit, @video) %>
+&nbsp;
 <%= link "Back", to: video_path(@conn, :index) %>
