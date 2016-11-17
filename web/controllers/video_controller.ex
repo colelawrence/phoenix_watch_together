@@ -31,7 +31,15 @@ defmodule Rumbl.VideoController do
     render(conn, "index.html", videos: videos)
   end
 
-  def new(conn, %{"video" => video_params}, user) do
+  def new(conn, params, user) do
+    # Allow optionally predefining video params
+    video_params = case params do
+      %{"video" => video_params} ->
+        video_params
+      _ ->
+        %{}
+    end
+
     changeset =
       user
       |> build_assoc(:videos)
