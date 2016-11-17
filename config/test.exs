@@ -9,6 +9,9 @@ config :rumbl, Rumbl.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
+config :comeonin, :bcrypt_log_rounds, 4
+config :comeonin, :pbkdf2_rounds, 1
+
 # Configure your database
 config :rumbl, Rumbl.Repo,
   adapter: Ecto.Adapters.Postgres,
