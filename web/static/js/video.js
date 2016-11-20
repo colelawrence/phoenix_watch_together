@@ -61,9 +61,34 @@ class Video {
       this.renderAnnotation(msgContainer, resp)
     })
 
+    // Listen for clicking annotations
+    msgContainer.addEventListener("click", evt => {
+      evt.preventDefault()
+      let millisec = evt.target.getAttribute("data-seek") ||
+                     evt.target.parentNode.getAttribute("data-seek")
+
+      if (!millisec) { return }
+
+      this.player.seekTo(millisec)
+    })
+
     vidChannel.join()
-      .receive("ok", resp => console.log("Joined the Video Channel", resp))
+      .receive("ok", ({annotations}) => {
+        this.scheduleAnnotations(msgContainer, annotations)
+        console.log("Joined the Video Channel")
+      })
       .receive("error", reason => console.log("Join Failed", reason))
+  }
+
+  scheduleAnnotations(msgContainer, annotations) {
+    setInterval(() => {
+      let ctime = this.player.getCurrentTime()
+      annotations = annotations.filter((ann) => {
+        let {at} = ann
+        if (at < ctime) this.renderAnnotation(msgContainer, ann)
+        else return true
+      })
+    }, 200)
   }
 
   renderAnnotation(container, {user, body, at}) {
@@ -71,7 +96,7 @@ class Video {
     const strAt = this.esc(at)
     template.innerHTML = `
       <a href="#" data-seek="${strAt}">
-        <i>[${strAt}]</i>&nbsp;<b>${this.esc(user.username)}</b>, ${this.esc(body)}
+        <i>[${this.fmtTime(at)}]</i>&nbsp;<b>${this.esc(user.username)}</b>, ${this.esc(body)}
       </a>
     `
 
@@ -79,7 +104,13 @@ class Video {
     container.scrollTop = container.scrollHeight
   }
 
-  esc (str) {
+  fmtTime(at) {
+    const date = new Date(null)
+    date.setSeconds(at / 1000)
+    return date.toISOString().substr(14, 5)
+  }
+
+  esc(str) {
     let div = document.createElement("div")
     div.appendChild(document.createTextNode(str))
     return div.innerHTML
