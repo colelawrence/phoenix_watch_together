@@ -1,3 +1,6 @@
 #msg-container {
   min-height: 190px;
 }
+iframe#video {
+  width: 100%;
+}

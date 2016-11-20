@@ -18,16 +18,10 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-// import socket from "./socket"
 
 import { Player } from './player.js'
 
-const video = document.getElementById("video")
+import socket from "./socket"
+import { Video } from './video.js'
 
-if (video) {
-  const player = new Player(video.id, video.dataset.playerId, () => {
-    console.log("Player ready!")
-  })
-} else {
-  console.log("No video found on page.")
-}
+new Video(socket, document.getElementById("video"))
