@@ -41,10 +41,10 @@
           <%= for {name, id} <- @current_categories do %>
             <%= link name, to: category_path(@conn, :show, id), class: "comma-separated" %>
           <% end %>
-
       </footer>
 
     </div> <!-- /container -->
+    <script>window.userToken = "<%= assigns[:user_token] %>"</script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

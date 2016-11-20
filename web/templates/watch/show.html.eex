@@ -1,6 +1,6 @@
 
 <h2><%= @video.title %></h2>
-<%= if @video.user_id == @current_user.id do %>
+<%= if @current_user && @video.user_id == @current_user.id do %>
 <div class="row">
   <style>
     .owner-actions {
@@ -18,7 +18,7 @@
   </div>
 </div>
 <% end %>
-<div class="row">
+<div class="row" id="watch-container">
   <div class="col-sm-7">
     <%= content_tag :div, id: "video",
         data: [id: @video.id, player_id: player_id(@video)] do end %>
@@ -30,6 +30,7 @@
       </div>
       <div id="msg-container" class="panel-body annotations"></div>
       <div class="panel-footer">
+        <div class="login-message">Log in to post Annotations</div>
         <textarea id="msg-input" rows="3" class="form-control"
             placeholder="Comment..."></textarea>
         <button id="msg-submit" class="btn btn-primary form-control" type="submit">
@@ -43,4 +44,3 @@
 <td><%= @video.url %></td>
 <td><%= @video.title %></td>
 <td><%= @video.description %></td>
-

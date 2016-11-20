@@ -9,9 +9,36 @@ class Video {
     const videoId = element.dataset.id
 
     socket.connect()
+
+    this.isOpened = false
+    this.watchContainer = document.getElementById("watch-container")
+
+    socket.onOpen( ev => { console.debug("OPEN", ev); this.onOpen() })
+    socket.onError( ev => console.error("ERROR", ev) )
+    socket.onClose( e => { console.log("CLOSE", e); this.onClose() })
+
     this.player = new Player(element.id, playerId, () => {
       this.onReady(videoId, socket)
     })
+
+    this.updateView()
+  }
+
+  onOpen() {
+    if (!this.isOpened) {
+      this.isOpened = true
+      this.updateView()
+    }
+  }
+  onClose() {
+    if (this.isOpened) {
+      this.isOpened = false
+      this.updateView()
+    }
+  }
+
+  updateView() {
+    this.watchContainer.dataset.isConnected = this.isOpened
   }
 
   onReady(videoId, socket) {

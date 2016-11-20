@@ -1,3 +1,9 @@
+#watch-container[data-is-connected=true] .login-message,
+#watch-container[data-is-connected=false] #msg-input,
+#watch-container[data-is-connected=false] #msg-submit {
+  visibility: hidden; position: absolute;
+}
+
 #msg-container {
   min-height: 190px;
 }

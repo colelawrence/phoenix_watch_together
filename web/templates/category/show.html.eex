@@ -20,7 +20,7 @@
       <td><%= video.description %></td>
 
       <td class="text-right">
-        <%= link "Show", to: video_path(@conn, :show, video), class: "btn btn-default btn-xs" %>
+        <%= link "Watch", to: watch_path(@conn, :show, video), class: "btn btn-default btn-xs" %>
       </td>
     </tr>
 <% end %>
