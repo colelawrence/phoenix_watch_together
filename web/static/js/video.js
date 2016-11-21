@@ -56,8 +56,8 @@ class Video {
     })
 
     // Listen to events
-    vidChannel.on("ping", ({count}) => console.log(`PING ${count}`))
     vidChannel.on("new_annotation", resp => {
+      vidChannel.params.last_seen_id = resp.id
       this.renderAnnotation(msgContainer, resp)
     })
 
@@ -74,6 +74,10 @@ class Video {
 
     vidChannel.join()
       .receive("ok", ({annotations}) => {
+        let ann_ids = annotations.map(ann => ann.id)
+        if (ann_ids.length > 0)
+          vidChannel.params.last_seen_id = Math.max(...ann_ids)
+
         this.scheduleAnnotations(msgContainer, annotations)
         console.log("Joined the Video Channel")
       })
