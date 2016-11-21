@@ -3,7 +3,7 @@ web:
   dockerfile: Dockerfile.local
   command: mix phoenix.server
   ports:
-    - 4000:4000
+    - 80:4000
   environment:
     - MIX_ENV=dev # That's the environment mode, you know
     - PORT=4000
