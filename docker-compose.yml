@@ -13,7 +13,7 @@ web:
     - .:/app # Here we're mounting our project's root directory inside the container
   links:
     - db
-
+  restart: always
 
 test:
   image: phoenixrumbltutorial_web # We're just using the already built `web` image here
@@ -33,3 +33,4 @@ db:
   image: postgres:9.6 # https://hub.docker.com/_/postgres/
   ports:
     - "5432"
+  restart: always
