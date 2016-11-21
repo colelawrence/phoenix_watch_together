@@ -17,9 +17,6 @@ We have copied his files recommendations here by:
 > We were required to install `docker-compose` via `apt install docker-compose`
 > On prompt, we chose to keep our current version of docker/compose with `N`.
 
-> In order to compile our dependencies, we needed `make`, so we ran `apt install build-essential erlang-dev` to install missing dependencies for building our containers.
-
-
 Now we are going to install the dependencies and create the database using the given commands:
 ```bash
 docker-compose run web mix deps.get
@@ -41,35 +38,7 @@ Finally, if we have any changes to the `Dockerfile.local` file, we need to rebui
 docker-compose build
 ```
 
-After this, we realized there was something wronge with the premade Phoenix image above with loading `make` and `gcc`, so we keep looking.
-
-## Starting with elixir image
-
-http://davidanguita.name/articles/dockerizing-a-phoenix-project/
-
-We found that we next needed to change his `docker-compose.yml` and `Dockerfile.local` files to update to postgres:9.6 and elixir:1.3.2 
-
-Then, once everything is configured you need to run `docker-compose build` which was not listed.
-
-This pulls down the elixir image layers, and then installs nodejs 6. 
-
 ```bash
-# Build the Docker image and start the `web` container, daemonized
-docker-compose up -d web
-
-# Install application's dependencies and compile them all
-docker-compose run web mix do deps.get, compile
-# It turns out a lot of these were short hand. Can we just add these to the dockerfile?
-# Create Database and Migration 
-docker-compose run web mix ecto.create && mix ecto.migrate
-
-# Install (mostly) JS dependencies through `npm`
-# We had some issues with this in our droplet, so we ran `apt install nodejs npm`
-docker-compose run web npm config set strict-ssl false && npm install
-# I want to try this again using:
-docker-compose run web npm config set strict-ssl false
-docker-compose run web npm install
-
 # Execute the seeding script, if needed
 docker-compose run web mix run priv/repo/seeds.exs
 
