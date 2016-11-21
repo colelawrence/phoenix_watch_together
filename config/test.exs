@@ -15,8 +15,11 @@ config :comeonin, :pbkdf2_rounds, 1
 # Configure your database
 config :rumbl, Rumbl.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("PG_USERNAME") || "postgres",
+  password: System.get_env("PG_PASSWORD") || "postgres",
+  hostname: System.get_env("PG_HOST") || "localhost",
+  # username: "postgres",
+  # password: "postgres",
   database: "rumbl_test",
-  hostname: "localhost",
+  # hostname: "db",
   pool: Ecto.Adapters.SQL.Sandbox

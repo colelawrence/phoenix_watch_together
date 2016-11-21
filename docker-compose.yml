@@ -1,0 +1,35 @@
+web:
+  build: .
+  dockerfile: Dockerfile.local
+  command: mix phoenix.server
+  ports:
+    - 4000:4000
+  environment:
+    - MIX_ENV=dev # That's the environment mode, you know
+    - PORT=4000
+    - PG_HOST=db
+    - PG_USERNAME=postgres
+  volumes:
+    - .:/app # Here we're mounting our project's root directory inside the container
+  links:
+    - db
+
+
+test:
+  image: phoenixrumbltutorial_web # We're just using the already built `web` image here
+  # env_file: .env
+  command: mix test # Run the entire test suite if no other command is specified
+  environment:
+    - MIX_ENV=test # That's key
+    - PORT=4001
+    - PG_HOST=db
+    - PG_USERNAME=postgres
+  volumes_from:
+    - web
+  links:
+    - db
+
+db:
+  image: postgres:9.6 # https://hub.docker.com/_/postgres/
+  ports:
+    - "5432"
