@@ -55,9 +55,57 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 ### Debugging Notes
 
 ```sh
-# run app
+# run app with code reloading and interactive session
 iex -S mix phoenix.server
 ```
+
+### Deploying App with Docker
+
+#### Setup server
+
+ 1. Get a Digital Ocean droplet based off of One-click app: `Ubuntu Docker 1.12.3 on 16.04`
+ 2. Install `docker-compose` with `apt install docker-compose` (and might as well update docker)
+
+#### Run containers
+
+Prerequisite: 
+ 1. From the droplet command line, git clone this repo.
+ 2. Run `bash ./install-dependencies.bash`
+    > This installs all the things you'll need for installing the elixir deps and creating and migrating the database. (read the file for more information)
+
+Then:
+
+```bash
+# From project directory
+# Start up stack (-d detached, web service)
+docker-compose up -d web
+```
+
+#### Kill docker containers
+
+```bash
+# From project directory
+docker-compose kill
+```
+
+#### Restart docker containers
+
+```bash
+# From project directory
+# Restart service (web service)
+docker-compose restart web
+```
+
+#### Test power cycle
+
+```bash
+# From project directory
+# Do not kill services
+# Restart docker os service
+sudo service docker restart
+```
+ 
+
 
 ## Learn more
 
