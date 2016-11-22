@@ -2,8 +2,8 @@ import { NgModule }            from '@angular/core';
 import { CommonModule }        from '@angular/common';
 import { FormsModule }         from '@angular/forms';
 
-import { InterestBlockComponent } from './interest-block/interest-block.component';
-import { CtaButtonComponent } from './cta-button/cta-button.component'
+// import { InterestBlockComponent } from './interest-block/interest-block.component';
+// import { CtaButtonComponent } from './cta-button/cta-button.component'
 
 // Components that live in multiple places around the app go here.
 // Examples may include: ps-button, ps-input, ps-carousel, etc.
@@ -19,9 +19,9 @@ import { CtaButtonComponent } from './cta-button/cta-button.component'
 // import { HighlightDirective }  from './highlight.directive';
 @NgModule({
   imports:      [ CommonModule ],
-  declarations: [ InterestBlockComponent, CtaButtonComponent ],
-  exports:      [ InterestBlockComponent,
+  declarations: [ /*InterestBlockComponent, CtaButtonComponent*/ ],
+  exports:      [ /*InterestBlockComponent,*/
                   CommonModule, FormsModule,
-                  CtaButtonComponent ]
+                  /*CtaButtonComponent*/ ]
 })
 export class SharedModule { }

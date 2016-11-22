@@ -18,6 +18,11 @@
   </div>
 </div>
 <% end %>
+<div class="row" id="watch-app">
+  <div class="col-xs-12">
+    <wt-app></wt-app>
+  </div>
+</div>
 <div class="row" id="watch-container">
   <div class="col-sm-7">
     <%= content_tag :div, id: "video",
@@ -44,3 +49,6 @@
 <td><%= @video.url %></td>
 <td><%= @video.title %></td>
 <td><%= @video.description %></td>
+<script src="<%= static_path(@conn, "/js/polyfills.js") %>"></script>
+<script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>

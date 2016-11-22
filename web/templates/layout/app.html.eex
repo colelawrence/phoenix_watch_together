@@ -9,6 +9,7 @@
 
     <title>Hello Rumbl!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <script>window.userToken = "<%= assigns[:user_token] %>"</script>
   </head>
 
   <body>
@@ -42,9 +43,6 @@
             <%= link name, to: category_path(@conn, :show, id), class: "comma-separated" %>
           <% end %>
       </footer>
-
     </div> <!-- /container -->
-    <script>window.userToken = "<%= assigns[:user_token] %>"</script>
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

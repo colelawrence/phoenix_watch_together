@@ -4,8 +4,8 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "deploy": "brunch build --production",
-    "watch": "brunch watch --stdin"
+    "deploy": "webpack",
+    "watch": "webpack --display-exclude --progress --colors --watch"
   },
   "dependencies": {
     "phoenix": "file:deps/phoenix",

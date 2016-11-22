@@ -17,7 +17,7 @@ var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 var ENV = process.env.npm_lifecycle_event;
 var isTestWatch = ENV === 'test-watch';
 var isTest = ENV === 'test' || isTestWatch;
-var isProd = ENV === 'build';
+var isProd = ENV === 'deploy';
 var skipOpti = /skipOpti/i.test(process.env.ENV);
 if (skipOpti) {
   console.warn("Skipping optimization through $ENV=skipOpti")
@@ -69,7 +69,7 @@ module.exports = function makeWebpackConfig() {
    * Reference: http://webpack.github.io/docs/configuration.html#output
    */
   config.output = isTest ? {} : {
-    path: root('www'),
+    path: root('priv/static'),
     filename: isProd ? 'js/[name].[hash].js' : 'js/[name].js',
     chunkFilename: isProd ? '[id].[hash].chunk.js' : '[id].chunk.js'
   };
@@ -121,11 +121,11 @@ module.exports = function makeWebpackConfig() {
       // all css in src/style will be bundled in an external css file
       {
         test: /\.css$/,
-        exclude: root('web/src/app'),
-        loader: isTest ? 'null' : ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+        exclude: root('web/src'),
+        loader: isTest ? 'null' : ExtractTextPlugin.extract('style', 'raw')
       },
       // all css required in src/app files will be merged in js files
-      {test: /\.css$/, include: root('web/static/css'), loader: 'raw!postcss'},
+      {test: /\.css$/, include: root('web/src'), loader: 'raw!postcss'},
 
       // support for .scss files
       // use 'null' loader in test mode (https://github.com/webpack/null-loader)
@@ -202,6 +202,8 @@ module.exports = function makeWebpackConfig() {
       // Reference: https://github.com/kevlened/copy-webpack-plugin
       new CopyWebpackPlugin([{
         from: root('web/static/assets')
+      }, {
+        from: root('web/static/css')
       }])
     );
   }
