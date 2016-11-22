@@ -1,0 +1,82 @@
+@import 'colors';
+
+// styles applied on :host are applied on the current component, "app" in this case
+:host {
+  display: block;
+}
+
+
+.mock {
+  .open, .dropup {
+    position: absolute;
+    background: whitesmoke;
+    right: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  .open {
+    z-index: 9998;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 20px;
+    bottom: 30%;
+  }
+
+  .dropup {
+    pointer-events: none;
+    opacity: 0;
+
+    z-index: 9999;
+    top: 10px;
+    bottom: 10px;
+    overflow: auto;
+    width: 220px;
+
+    .lang {
+      padding: 6px;
+      display: inline-block;
+      &:hover {
+        background: rgb(190, 230, 75);
+      }
+    }
+
+    > .title {
+      font-size: .8em;
+      font-weight: bold;
+      color: black;
+      text-transform: uppercase;
+    }
+
+    [data-mock-key=WhitelistedSignedUpBeta],
+    [data-mock-key=RankingNotSubmitted],
+    [data-mock-key=PreppingNotOpened] {
+      background: rgba(255, 250, 0, 0.2);
+    }
+    [data-mock-key=PreppingOpened] {
+      background: rgba(255, 250, 0, 0.4);
+    }
+
+    > div {
+      padding: 6px;
+      padding-left: 4px;
+      border-bottom: 1px solid #d9d6cf;
+    }
+    > a {
+      padding: .5em;
+      display: block;
+      text-decoration: none;
+      border-bottom: 1px solid #d9d6cf;
+
+      &:visited {
+        color: blue;
+      }
+    }
+
+    transition: opacity .2s;
+
+    &.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+}

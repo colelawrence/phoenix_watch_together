@@ -1,0 +1,34 @@
+<router-outlet></router-outlet>
+
+<!-- Mockstate Overlay "M" -->
+<div class="mock">
+  <div class="open" (click)="mockSelectionOpen = true">
+    M
+  </div>
+  <div class="dropup"
+      [class.show]="mockSelectionOpen"
+      (click)="mockSelectionOpen = false">
+    <div class="title">Select Lang</div>
+    <span *ngFor="let nv of languageKeys"
+        class="lang"
+        (click)="setLanguage(nv.name)">
+      {{ nv.name }}
+    </span>
+    <div class="title">Select State</div>
+    <div *ngFor="let key of mockStateKeys"
+        [attr.data-mock-key]="key"
+        (click)="setMockState(key)">
+      {{key}}
+    </div>
+    <div class="title">Links</div>
+    <a routerLink="/configure-search">/configure-search</a>
+    <a routerLink="/configure-rank">/configure-rank</a>
+    <a routerLink="/login">/login</a>
+    <a routerLink="/status">/status</a>
+    <a routerLink="/lobby">/lobby</a>
+    <a routerLink="/history">/history</a>
+    <a routerLink="/beta-signup">/beta-signup</a>
+    <a routerLink="/">/</a>
+    <div (click)="mockSelectionOpen = false">Close</div>
+  </div>
+</div>

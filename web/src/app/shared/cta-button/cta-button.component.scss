@@ -1,0 +1,50 @@
+// Import the colors file for use here
+@import 'colors';
+@import 'mixins';
+// @import '../../../style/fonts';
+
+$button-color-border: $electric-lavender;
+$button-color-neutral: $white-smoke;
+$button-color-negative: $raspberry-pink;
+$button-color-positive: $bright-turquois;
+
+:host {
+  border-color: $button-color-border;
+  transition: all .2s ease-in;
+
+  &[cta-neutral], & {
+    color: $button-color-neutral;
+  }
+
+  &[cta-positive] {
+    color: $button-color-positive;
+  }
+
+  &[cta-negative] {
+    color: $button-color-negative;
+  }
+}
+
+:host {
+  // font settings for the call-to-action buttons
+  font-family: 'futura';
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+
+  // display settings
+  display: inline-block;
+  position: relative;
+  border-width: 4px;
+  border-style: solid;
+  padding: 4px 12px;
+  user-select: none;
+  cursor: pointer;
+
+  // @include set-transition(background-color color border, ease-out, 0.3s);
+
+  &[disabled=true] {
+    border-color: transparentize($coal, 0.3);
+    color: transparentize($coal, 0.2);
+  }
+}
