@@ -9,3 +9,5 @@
 </div>
 <%= submit "Log in", class: "btn btn-primary" %>
 <% end %>
+
+<a href="https://www.facebook.com/v2.8/dialog/oauth?client_id=223571858077372&redirect_uri=https://wt.parrot.host/oauth/fb" class="btn btn-primary">Login with Facebook OAuth</a>

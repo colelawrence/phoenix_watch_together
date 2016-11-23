@@ -7,7 +7,11 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
 config :rumbl, Rumbl.Endpoint,
-  http: [port: 4000],
+  url: [host: "wt.parrot.host", port: 443],
+  https: [port: 443,
+          keyfile: "config/ssl/server.key",
+          certfile: "config/ssl/server.crt"],
+  force_ssl: [hsts: true],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -44,3 +48,5 @@ config :rumbl, Rumbl.Repo,
   database: "rumbl_dev",
   # hostname: "db",
   pool_size: 10
+
+# import_config "prod.secret.exs"

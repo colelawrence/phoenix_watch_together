@@ -3,10 +3,10 @@ web:
   dockerfile: Dockerfile.local
   command: mix phoenix.server
   ports:
-    - 80:4000
+    - 443:443
   environment:
     - MIX_ENV=dev # That's the environment mode, you know
-    - PORT=4000
+    - PORT=443
     - PG_HOST=db
     - PG_USERNAME=postgres
   volumes:

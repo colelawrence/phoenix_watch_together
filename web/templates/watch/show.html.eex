@@ -19,7 +19,8 @@
 </div>
 <% end %>
 <style>#group-video { width:100%; height: 100%; }</style>
-<wt-app></wt-app>
-<script src="<%= static_path(@conn, "/js/polyfills.js") %>"></script>
-<script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
-<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+
+<td><%= @video.user_id %></td>
+<td><%= @video.url %></td>
+<td><%= @video.title %></td>
+<td><%= @video.description %></td>

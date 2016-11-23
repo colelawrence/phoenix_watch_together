@@ -59,6 +59,9 @@ module.exports = function makeWebpackConfig() {
    * Reference: http://webpack.github.io/docs/configuration.html#entry
    */
   config.entry = isTest ? {} : {
+    // This is used for generating code for deleting sessions
+    'phoenix_html': ['phoenix_html'],
+
     'polyfills': './web/src/polyfills.ts',
     'vendor': './web/src/vendor.ts',
     'app': './web/src/main.ts' // our angular app
@@ -169,7 +172,7 @@ module.exports = function makeWebpackConfig() {
       // Reference: https://webpack.github.io/docs/code-splitting.html
       // Reference: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
       new CommonsChunkPlugin({
-        name: ['vendor', 'polyfills']
+        name: ['polyfills', 'vendor', 'phoenix']
       }),
 
       // Extract css files

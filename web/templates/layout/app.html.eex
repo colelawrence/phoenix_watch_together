@@ -9,12 +9,13 @@
 
     <title>Hello Rumbl!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <script src="<%= static_path(@conn, "/js/polyfills.js") %>"></script>
     <script>window.userToken = "<%= assigns[:user_token] %>"</script>
   </head>
 
   <body>
     <div class="fluid-container" style="padding: 0 5vw;">
-      <header class="header">
+      <header>
         <nav role="navigation">
           <ol class="breadcrumb text-right">
             <%= if @current_user do %>
@@ -27,7 +28,6 @@
             <% end %>
           </ol>
         </nav>
-        <span class="logo"></span>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
@@ -44,5 +44,6 @@
           <% end %>
       </footer>
     </div> <!-- /container -->
+    <script src="<%= static_path(@conn, "/js/phoenix_html.js") %>"></script>
   </body>
 </html>

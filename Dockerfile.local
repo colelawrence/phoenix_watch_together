@@ -17,7 +17,7 @@ RUN mix archive.install --force https://github.com/phoenixframework/archives/raw
 
 # Install NodeJS 6.x and the NPM
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get install -y -q nodejs
+RUN apt-get install -y -q nodejs inotify-tools
 
 # Set /app as workdir
 WORKDIR /app

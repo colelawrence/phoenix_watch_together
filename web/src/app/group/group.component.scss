@@ -1,26 +1,28 @@
 // component styles are encapsulated and only applied to their components
 :host {
   display: block;
-  padding: 32px;
 }
 
 
 .group-video-height {
   height: 400px;
-  padding: 15px;
-  margin-top: 15px;
+  padding: 0;
   background: #111;
   max-height: 80vh;
 }
 .window-topbar {
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+
+  .btn {
+    vertical-align: text-bottom;
+  }
 
   .video-name {
     text-align: center;
     display: inline-block;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 36px;
+    margin-left: 8px;
   }
 }
 
@@ -60,6 +62,15 @@
   .text {
     display: block;
     font-size: 22px;
+  }
+}
+
+.form-group {
+  padding: 4px;
+  width: 100%;
+
+  input {
+    width: calc(100% - 64px);
   }
 }
 

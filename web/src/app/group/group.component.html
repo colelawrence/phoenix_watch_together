@@ -11,9 +11,9 @@
 <div *ngIf="group" class="row">
 
 
-<div class="window-topbar col-xs-12">
+<div class="window-topbar">
   <button class="btn btn-default" (click)="clickLeaveGroup()">Leave</button>
-  <div class="video-name">{{ group.Playing | json }}</div>
+  <div class="video-name" *ngIf="group.Playing">{{ group.Playing.Name }}</div>
   <br>
   <div class="user-list">
     <span *ngFor="let user of group.Users" class="comma-separated">
@@ -70,7 +70,6 @@
   </div>
 
   <div class="message-window">
-    <div class="intro-message"></div>
     <!--List of messages-->
     <div *ngFor="let message of group.Messages"
         class="message">
