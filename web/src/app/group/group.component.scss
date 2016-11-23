@@ -1,0 +1,73 @@
+// component styles are encapsulated and only applied to their components
+:host {
+  display: block;
+  padding: 32px;
+}
+
+
+.group-video-height {
+  height: 400px;
+  padding: 15px;
+  margin-top: 15px;
+  background: #111;
+  max-height: 80vh;
+}
+.window-topbar {
+  position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+
+  .video-name {
+    text-align: center;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 22px;
+  }
+}
+
+.message-window {
+  /*position: absolute;*/
+  z-index: 1;
+  min-height: 400px;
+  left: 0;
+  right: 0;
+  overflow-y: scroll;
+  max-height: 80vh;
+
+  .intro-message {
+    margin-top: 32px;
+  }
+}
+
+.message {
+  padding: 8px 32px;
+  animation: MessageEntry 2s ease-in;
+
+  .header {
+    margin-bottom: 4px;
+  }
+
+  .sender {
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .date {
+    color: #676767;
+    font-size: 16px;
+    margin-left: 6px;
+  }
+
+  .text {
+    display: block;
+    font-size: 22px;
+  }
+}
+
+@keyframes MessageEntry {
+  from {
+    background: rgba(255,0,0,0.4);
+  }
+  to {
+    background: rgba(255,0,0,0);
+  }
+}

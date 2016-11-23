@@ -1,0 +1,59 @@
+// component styles are encapsulated and only applied to their components
+:host {
+  display: block;
+  padding: 32px;
+}
+
+.intro-screen {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  z-index: 10;
+  background: white;
+
+  padding: 32px;
+
+  button {
+    right: 32px;
+    bottom: 32px;
+    position: absolute;
+  }
+
+  .title {
+    font-size: 17vw;
+  }
+
+  .interest-title {
+    font-size: 28px;
+
+    .interest-name {
+      font-weight: bold;
+    }
+    .dot {
+      display: inline-block;
+      width: 1ch;
+      height: 1ch;
+      border-radius: 1ch;
+    }
+  }
+
+  .user-list {
+    padding: 16px;
+
+    .user-name {
+      font-size: 32px;
+      animation: UserIntro .4s;
+    }
+  }
+}
+
+@keyframes UserIntro {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -53,7 +53,6 @@ export class DeviceStateService {
   }
 
   next() {
-    console.log(this._state)
     this.stateObserver.next(this._state)
   }
 
@@ -72,11 +71,12 @@ export class DeviceStateService {
   }
 
   setDefaultState() {
-    this.setState({
-      HasLoggedIn: false,
-      NotLoggedIn: {
-        HasLoggedOutShown: false
-      }
-    })
+    this.setState(Mocks.getState("GroupOpened"))
+    // this.setState({
+    //   HasLoggedIn: false,
+    //   NotLoggedIn: {
+    //     HasLoggedOutShown: false
+    //   }
+    // })
   }
 }

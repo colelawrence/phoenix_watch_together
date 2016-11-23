@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 export const routes: Routes = [
   // TODO Redirect based on device state
-  { path: '', redirectTo: 'login', pathMatch: 'full'},
+  { path: '', redirectTo: 'group-index', pathMatch: 'full'},
 ];
 
 @NgModule({

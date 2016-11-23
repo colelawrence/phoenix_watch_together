@@ -1,0 +1,21 @@
+
+<!--lobby:
+{ Interest: { Color, Name },
+  Expires: Date,
+  Users: User[] }-->
+<!--isOpen: boolean-->
+
+<div class="intro-screen" *ngIf="isOpen">
+  <div class="title">Introducing</div>
+  <div class="interest-title">
+    <span class="dot" [style.backgroundColor]="lobby.Interest.Color"></span>
+    <span class="interest-name">{{ lobby.Interest.Name }}</span>
+    <span>with...</span>
+  </div>
+  <div class="user-list">
+    <div class="user-name" *ngFor="let user of lobby.Users">
+      {{ user.Name }}
+    </div>
+  </div>
+  <button class="ps-button" (click)="clickCloseIntro()">Let's go!</button>
+</div>

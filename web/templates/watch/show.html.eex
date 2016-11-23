@@ -18,37 +18,8 @@
   </div>
 </div>
 <% end %>
-<div class="row" id="watch-app">
-  <div class="col-xs-12">
-    <wt-app></wt-app>
-  </div>
-</div>
-<div class="row" id="watch-container">
-  <div class="col-sm-7">
-    <%= content_tag :div, id: "video",
-        data: [id: @video.id, player_id: player_id(@video)] do end %>
-  </div>
-  <div class="col-sm-5">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Annotations</h3>
-      </div>
-      <div id="msg-container" class="panel-body annotations"></div>
-      <div class="panel-footer">
-        <div class="login-message">Log in to post Annotations</div>
-        <textarea id="msg-input" rows="3" class="form-control"
-            placeholder="Comment..."></textarea>
-        <button id="msg-submit" class="btn btn-primary form-control" type="submit">
-          Post
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-<td><%= @video.user_id %></td>
-<td><%= @video.url %></td>
-<td><%= @video.title %></td>
-<td><%= @video.description %></td>
+<style>#group-video { width:100%; height: 100%; }</style>
+<wt-app></wt-app>
 <script src="<%= static_path(@conn, "/js/polyfills.js") %>"></script>
 <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
 <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

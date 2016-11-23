@@ -11,6 +11,8 @@ import { SharedModule } from './shared/shared.module';
 
 /* Feature Modules */
 // import { LobbyModule } from './lobby/lobby.module';
+import { GroupModule } from './group/group.module';
+import { GroupIndexModule } from './group-index/group-index.module';
 
 import { CoreModule } from './core/core.module';
 
@@ -28,6 +30,8 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
     // Feature Routes
     // LobbyModule,
+    GroupModule,
+    GroupIndexModule,
 
     // CoreModule defines everything that needs to be imported once,
     // and app-wide singletons such as the DeviceStateService

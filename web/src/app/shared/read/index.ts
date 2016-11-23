@@ -48,9 +48,8 @@ interface Group {
   Playing: Video
   Users: User[]
   Messages: GroupMessage[]
-  NextVideos: Video[]
-  // VotesOpen: "spot" | "time" | null
-  // VideoVotes: NextVideoVote[]
+  ModalOpen: "video" | null
+  VideoVotes: VideoVote[]
   SkipVote: SkipVote
 }
 
@@ -61,9 +60,9 @@ interface SkipVote {
 }
 
 export
-interface NextVideoVote {
+interface VideoVote {
   Id: string
-  NextVideo: Video
+  Video: Video
   VoteCount: number
   HasVote: boolean
 }

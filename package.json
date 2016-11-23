@@ -19,7 +19,6 @@
     "@angular/platform-browser-dynamic": "2.0.0",
     "@angular/router": "3.0.0",
     "core-js": "^2.4.1",
-    "ionic-native": "^2.2.6",
     "lodash.clonedeep": "^4.5.0",
     "lodash.merge": "^4.6.0",
     "lodash.mergewith": "^4.6.0",

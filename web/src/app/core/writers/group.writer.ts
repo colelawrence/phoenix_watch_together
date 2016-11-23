@@ -21,21 +21,29 @@ export class GroupWriter {
       User: currentState.LoggedIn.User
     }
 
-    currentState.LoggedIn.Group.Messages.push(message)
+    currentState.LoggedIn.Group.Messages.unshift(message)
 
     console.log("sending", messageText)
 
     this._dss.updateState(currentState)
   }
-	/*
-  setVotesOpen(votesOpen: "spot" | "time" | null) {
+	
+  setModalOpen(modalId: "video" | null) {
     let currentState = this._dss.getState()
 
-    currentState.LoggedIn.Group.VotesOpen = votesOpen
+    currentState.LoggedIn.Group.ModalOpen = modalId
 
     this._dss.updateState(currentState)
   }
-  */
+
+	leaveGroup() {
+    let currentState = this._dss.getState()
+
+    currentState.LoggedIn.Group = null
+
+    this._dss.updateState(currentState)
+  }
+
   castSkipVote(hasVote: boolean) {
     let currentState = this._dss.getState()
 
@@ -53,16 +61,17 @@ export class GroupWriter {
     currentState.LoggedIn.Group.SkipVote = skipVote
     this._dss.updateState(currentState)
   }
-	/*
-  castSpotVote(spot: R.Vote, hasVote: boolean) {
+
+  castVideoVote(video: R.VideoVote, hasVote: boolean) {
     let currentState = this._dss.getState()
 
-    let spotVotes = currentState.LoggedIn.Group.SpotVotes
+    let videoVotes = currentState.LoggedIn.Group.VideoVotes
 
-    currentState.LoggedIn.Group.SpotVotes = this.castVote(spotVotes, spot, hasVote)
+    currentState.LoggedIn.Group.VideoVotes = this.castVote(videoVotes, video, hasVote)
     this._dss.updateState(currentState)
   }
 
+	/*
   castTimeVote(time: R.Vote, hasVote: boolean) {
     let currentState = this._dss.getState()
 
@@ -71,8 +80,9 @@ export class GroupWriter {
     currentState.LoggedIn.Group.TimeVotes = this.castVote(timeVotes, time, hasVote)
     this._dss.updateState(currentState)
   }
+  */
 
-  private castVote(votes: R.Vote[], cast: R.Vote, hasVote: boolean): R.Vote[] {
+  private castVote(votes: R.VideoVote[], cast: R.VideoVote, hasVote: boolean): R.VideoVote[] {
     return votes.map(v => {
       const hadVote = v.HasVote
       if (v.Id === cast.Id) {
@@ -84,5 +94,4 @@ export class GroupWriter {
       return v
     })
   }
-  */
 }
