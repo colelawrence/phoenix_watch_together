@@ -21,7 +21,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 
 import { DeviceStateService } from './core/device-state.service'
-import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
 @NgModule({
   imports: [

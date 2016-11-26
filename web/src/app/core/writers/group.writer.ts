@@ -3,11 +3,39 @@ import { Injectable } from '@angular/core';
 import * as R from '../../shared/read';
 import { DeviceStateService } from '../device-state.service'
 
+import { SocketService } from "../phoenix/socket.service"
+
+import {Socket,Channel} from 'phoenix'
+
 @Injectable()
 export class GroupWriter {
 
-  constructor(private _dss: DeviceStateService) {
+	private pingChannel: Channel
+
+  constructor(private _dss: DeviceStateService,
+  		private phoenix_socket: SocketService) {
     console.log("Created Group Writer")
+    this.pingChannel = this.phoenix_socket.socket.channel('ping')
+    
+    this.pingChannel.on('pong', ({message}) => {
+      let currentState = this._dss.getState()
+
+      const postMessage: R.GroupMessage = {
+        Date: new Date(),
+        Text: 'Server Heartbeat\n' + String(message),
+        User: {Name: "Server"}
+      }
+
+      currentState.LoggedIn.Group.Messages.unshift(postMessage)
+
+      this._dss.updateState(currentState)
+    })
+
+    this.pingChannel.join()
+      .receive("ok", (resp) => {
+        console.log("Joined the Ping Channel", resp)
+      })
+      .receive("error", reason => console.log("Join Failed", reason))
   }
 
   // Attempt login takes care of trying logging in, and updating the device state
@@ -23,7 +51,10 @@ export class GroupWriter {
 
     currentState.LoggedIn.Group.Messages.unshift(message)
 
-    console.log("sending", messageText)
+		if (messageText.toLowerCase().indexOf('ping') > -1) {
+      this.pingChannel.push('ping', {})
+      								.receive("error", e => console.error(e) )
+    }
 
     this._dss.updateState(currentState)
   }

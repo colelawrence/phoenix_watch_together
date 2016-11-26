@@ -1,12 +1,13 @@
 import {
   ModuleWithProviders, NgModule,
-  Optional, SkipSelf }       from '@angular/core';
+  Optional, SkipSelf }  from '@angular/core';
 
-import { CommonModule }      from '@angular/common';
-import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpModule }   from '@angular/http';
+import { FormsModule }  from '@angular/forms';
 
-import { DeviceStateService }from './device-state.service';
+import { DeviceStateService } from './device-state.service';
+import { SocketService }      from './phoenix/socket.service';
 import {
   GroupWriter,
 } from '../core/writers';
@@ -16,6 +17,7 @@ import {
   // exports:      [ TitleComponent ],
   providers:    [
     DeviceStateService,
+    SocketService,
 
     GroupWriter,
   ]
