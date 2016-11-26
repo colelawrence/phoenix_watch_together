@@ -55,62 +55,53 @@ defmodule Rumbl.Auth do
   end
 
   alias Rumbl.User
-  alias Rumbl.UserFBAuth
   import Ecto
 
-  def login_with_facebook(conn, access_token, expires_in, opts) do
+  defp update_user_info_from_facebook(user, access_token, expires_in) do
     {:json, %{"id" => fb_id,
       "name" => name,
       "first_name" => first_name,
       "gender" => gender,
       "age_range" => %{ "max" => age_max, "min" => age_min }}} =
       Facebook.me([fields: "id,name,first_name,gender,age_range"], access_token)
+
+    user
+      |> User.changeset(%{
+          fb_id: fb_id,
+          fb_token: access_token,
+          fb_expires: :os.system_time(:millisecond) + expires_in,
+          name: name,
+          first_name: first_name,
+          age_min: age_min,
+          age_max: age_max,
+          gender: gender,
+        })
+  end
+
+  def create_user_with_facebook(conn, access_token, expires_in, opts) do
+    {:json, %{"id" => fb_id}} =
+      Facebook.me([fields: "id"], access_token)
     
     repo = Keyword.fetch! opts, :repo
 
-    user_fb_auth = repo.get_by UserFBAuth, fb_id: fb_id
+    user = repo.get_by User, fb_id: fb_id
     cond do
-      user_fb_auth ->
-        user = repo.get_by User, fb_auth: user_fb_auth
-        IO.puts "Found user fb auth:"
-        IO.inspect user_fb_auth
-        IO.puts "Found user fb auth, got user"
+      user ->
+        IO.puts "You have an account!!!!@@@@@"
         IO.inspect user
 
         {:ok, user}
       true ->
+        # New User log in
         user_changeset =
-        %User{}
-        |> User.changeset(%{
-            name: name,
-            first_name: first_name,
-            age_min: age_min,
-            age_max: age_max,
-            gender: gender,
-          })
+          %User{}
+          |> update_user_info_from_facebook(access_token, expires_in)
 
         case repo.insert(user_changeset) do
           {:ok, user} ->
-            expire_datetime = :os.system_time(:millisecond) + expires_in
-
-            auth_changeset =
-              user
-              |> build_assoc(:fb_auth)
-              |> UserFBAuth.changeset(%{
-                  fb_id: fb_id,
-                  fb_token: access_token,
-                  expires: expire_datetime,
-                })
-            
-            case repo.insert(auth_changeset) do
-              {:ok, auth} ->
-                IO.puts "Success!!!!!@@@@"
-                IO.inspect user
-                {:ok, login(conn, user), auth}
-
-              {:error, changeset} ->
-                {:error, changeset}
-            end
+            IO.puts "Success!!!!!@@@@@"
+            IO.inspect user
+            {:ok, user}
 
           {:error, changeset} ->
             {:error, changeset}
