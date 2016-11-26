@@ -13,7 +13,7 @@ defmodule Rumbl.GroupView do
     %{
       id: msg.id,
       body: msg.body,
-      posted_by: render_one(msg.posted_by, Rumbl.UserView, "user.json")
+      user_id: vp.user_id,
     }
   end
 
@@ -22,7 +22,7 @@ defmodule Rumbl.GroupView do
       id: vp.id,
       yt_id: vp.yt_id,
       score: vp.score,
-      proposed_by: render_one(vp.proposed_by, Rumbl.UserView, "user.json"),
+      user_id: vp.user_id,
     }
   end
 end

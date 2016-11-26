@@ -5,13 +5,13 @@ defmodule Rumbl.Repo.Migrations.CreateGroupVideoProposal do
     create table(:group_video_proposals) do
       add :yt_id, :string
       add :score, :integer
-      add :group, references(:groups, on_delete: :nothing)
-      add :proposed_by, references(:users, on_delete: :nothing)
+      add :group_id, references(:groups, on_delete: :nothing)
+      add :user_id, references(:users, on_delete: :nothing)
 
       timestamps()
     end
-    create index(:group_video_proposals, [:group])
-    create index(:group_video_proposals, [:proposed_by])
+    create index(:group_video_proposals, [:group_id])
+    create index(:group_video_proposals, [:user_id])
 
   end
 end

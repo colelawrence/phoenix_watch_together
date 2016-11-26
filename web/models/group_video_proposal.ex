@@ -4,8 +4,8 @@ defmodule Rumbl.GroupVideoProposal do
   schema "group_video_proposals" do
     field :yt_id, :string
     field :score, :integer
-    belongs_to :group, Rumbl.Group
-    belongs_to :proposed_by, Rumbl.ProposedBy
+    belongs_to :groups, Rumbl.Group
+    belongs_to :users, Rumbl.User
 
     timestamps()
   end
