@@ -5,7 +5,13 @@ defmodule Rumbl.GroupView do
     %{
       id: group.id,
       name: group.name,
-      listed: listed,
+      listed: group.listed,
+    }
+  end
+
+  def render("error.json", %{reason: reason}) do
+    %{
+      error: reason
     }
   end
 
