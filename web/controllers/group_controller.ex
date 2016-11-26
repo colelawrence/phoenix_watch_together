@@ -25,12 +25,12 @@ defmodule Rumbl.GroupController do
     changeset = Group.changeset(%Group{}, group_params)
     case Repo.insert(changeset) do
       {:ok, group} ->
+
+
         group_user_cs =
           user
-          |> build_assoc(:groups)
-          |> GroupUser.changeset(%{
-            group: group
-          })
+          |> build_assoc(:groups, group_id: group.id)
+          |> GroupUser.changeset()
 
         group_user = Repo.insert!(group_user_cs)
 
@@ -69,7 +69,7 @@ defmodule Rumbl.GroupController do
       {:error, _no_exist} ->
         conn
         |> put_flash(:error, "You must be a member of the group to update it!")
-        |> redirect(to: group_path(conn, :show, group))
+        |> redirect(to: group_path(conn, :index))
     end
   end
 
