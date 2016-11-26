@@ -9,8 +9,8 @@ use Mix.Config
 config :rumbl, Rumbl.Endpoint,
   url: [host: "wt.parrot.host", port: 443],
   https: [port: 443,
-          keyfile: "config/ssl/server.key",
-          certfile: "config/ssl/server.crt"],
+          keyfile: "priv/ssl/server.key",
+          certfile: "priv/ssl/server.crt"],
   force_ssl: [hsts: true],
   debug_errors: true,
   code_reloader: true,
@@ -49,4 +49,4 @@ config :rumbl, Rumbl.Repo,
   # hostname: "db",
   pool_size: 10
 
-# import_config "prod.secret.exs"
+import_config "dev.secret.exs"
