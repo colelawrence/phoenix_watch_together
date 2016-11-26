@@ -16,6 +16,11 @@ defmodule Rumbl.User do
     has_many :videos, Rumbl.Video
     has_many :annotations, Rumbl.Annotation
 
+    has_many :groups, Rumbl.GroupUser
+    has_many :messages, Rumbl.GroupMessage
+    has_many :proposals, Rumbl.GroupVideoProposal
+    has_many :proposal_votes, Rumbl.GroupVPVote
+
     timestamps
   end
 
