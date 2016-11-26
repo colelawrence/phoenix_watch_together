@@ -4,7 +4,7 @@ defmodule Rumbl.UserFBAuth do
   schema "user_fb_auths" do
     field :fb_id, :string
     field :fb_token, :string
-    field :expires, :integer
+    field :expires, :float
     belongs_to :user, Rumbl.User
 
     timestamps()
@@ -16,6 +16,6 @@ defmodule Rumbl.UserFBAuth do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:fb_id, :fb_token, :expires])
-    |> validate_required([:fb_id, :fb_token, :expires])
+    |> unique_constraint(:fb_id)
   end
 end

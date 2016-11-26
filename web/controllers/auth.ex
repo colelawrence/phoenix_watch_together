@@ -51,6 +51,69 @@ defmodule Rumbl.Auth do
     |> configure_session(drop: true)
   end
 
+  alias Rumbl.User
+  alias Rumbl.UserFBAuth
+  import Ecto
+
+  def login_with_facebook(conn, access_token, expires_in, opts) do
+    {:json, %{"id" => fb_id,
+      "name" => name,
+      "first_name" => first_name,
+      "gender" => gender,
+      "age_range" => %{ "max" => age_max, "min" => age_min }}} =
+      Facebook.me([fields: "id,name,first_name,gender,age_range"], access_token)
+    
+    repo = Keyword.fetch! opts, :repo
+
+    user_fb_auth = repo.get_by UserFBAuth, fb_id: fb_id
+    cond do
+      user_fb_auth ->
+        user = repo.get_by User, fb_auth: user_fb_auth
+        IO.puts "Found user fb auth:"
+        IO.inspect user_fb_auth
+        IO.puts "Found user fb auth, got user"
+        IO.inspect user
+
+        {:ok, user}
+      true ->
+        user_changeset =
+        %User{}
+        |> User.changeset(%{
+            name: name,
+            first_name: first_name,
+            age_min: age_min,
+            age_max: age_max,
+            gender: gender,
+          })
+
+        case repo.insert(user_changeset) do
+          {:ok, user} ->
+            expire_datetime = :os.system_time(:millisecond) + expires_in
+
+            auth_changeset =
+              user
+              |> build_assoc(:fb_auth)
+              |> UserFBAuth.changeset(%{
+                  fb_id: fb_id,
+                  fb_token: access_token,
+                  expires: expire_datetime,
+                })
+            
+            case repo.insert(auth_changeset) do
+              {:ok, auth} ->
+                IO.puts "Success!!!!!@@@@"
+                {:ok, login(conn, user), auth}
+
+              {:error, changeset} ->
+                {:error, changeset}
+            end
+
+          {:error, changeset} ->
+            {:error, changeset}
+        end
+    end
+  end
+
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
 
   def login_by_username_and_pass(conn, username, given_password, opts) do

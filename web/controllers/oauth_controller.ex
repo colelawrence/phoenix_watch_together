@@ -1,8 +1,8 @@
 defmodule Rumbl.OAuthController do
   use Rumbl.Web, :controller
 
+  # Redirect URL for Facebook to hand our server an access code to retrieve the token with
   def show(conn, %{"id" => "fb", "code" => code}) do
-    IO.puts "oauth code"
     # This is what facebook gives our app to complete request
     cid = Application.get_env(:rumbl, :facebook)[:client_id]
     sec = Application.get_env(:rumbl, :facebook)[:client_secret]
@@ -10,20 +10,28 @@ defmodule Rumbl.OAuthController do
 
     case Facebook.accessToken(cid, sec, redir, code) do
       %{ "access_token" => access_token, "expires_in" => expires_in } ->
-        IO.puts access_token
-        IO.puts expires_in
+        case Rumbl.Auth.login_with_facebook(conn, access_token, expires_in, repo: Rumbl.Repo) do
+          {:ok, %Rumbl.User{ first_name: name, age_min: age_min, age_max: age_max, gender: gender }, _auth} ->
+            # TODO get information about this code and insert it into the database
+            # If it doesn't already exist, then bollocks.
+            conn
+            |> put_flash(:info, "Welcome #{name}! We think you are #{age_min}-#{age_max}/#{gender}")
+            |> redirect(to: page_path(conn, :index))
 
-        {:json, %{"id" => fb_id,
-          "first_name" => fname,
-          "gender" => gender,
-          "age_range" => %{ "max" => max_age, "min" => min_age }}} =
-          Facebook.me([fields: "id,first_name,gender,age_range"], access_token)
-
-        # TODO get information about this code and insert it into the database
-        # If it doesn't already exist, then bollocks.
-        conn
-        |> put_flash(:info, "Welcome #{fname}! We think you are #{fb_id}@#{min_age}-#{max_age}/#{gender}")
-        |> redirect(to: page_path(conn, :index))
+          {:error, reasons} ->
+            cond do
+              is_list(reasons) ->
+                conn
+                |> put_flash(:error, "Unable to log in, #{reasons}")
+                |> redirect(to: session_path(conn, :new))
+              true ->
+                IO.inspect "Error logging in with facebook"
+                IO.inspect reasons
+                conn
+                |> put_flash(:error, "Unable to log in :,-(")
+                |> redirect(to: session_path(conn, :new))
+            end
+        end
         
       %{ "error" => %{ "message" => message } } ->
         conn
