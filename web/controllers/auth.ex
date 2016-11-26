@@ -7,7 +7,10 @@ defmodule Rumbl.Auth do
 
   def call(conn, repo) do
     user_id = get_session conn, :user_id
-    
+
+    IO.puts "Currently logged in as:"
+    IO.puts user_id
+
     cond do
       user = conn.assigns[:current_user] ->
         put_current_user(conn, user)
@@ -102,6 +105,7 @@ defmodule Rumbl.Auth do
             case repo.insert(auth_changeset) do
               {:ok, auth} ->
                 IO.puts "Success!!!!!@@@@"
+                IO.inspect user
                 {:ok, login(conn, user), auth}
 
               {:error, changeset} ->
