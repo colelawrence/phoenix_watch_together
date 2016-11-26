@@ -172,7 +172,8 @@ module.exports = function makeWebpackConfig() {
       // Reference: https://webpack.github.io/docs/code-splitting.html
       // Reference: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
       new CommonsChunkPlugin({
-        name: ['polyfills', 'vendor', 'phoenix']
+        name: 'commons',
+        chunks: ['phoenix_html']
       }),
 
       // Extract css files

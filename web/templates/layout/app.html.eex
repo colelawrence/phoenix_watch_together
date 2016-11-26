@@ -9,7 +9,8 @@
 
     <title>Hello Rumbl!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-    <script src="<%= static_path(@conn, "/js/polyfills.js") %>"></script>
+    <script src="<%= static_path(@conn, "/js/commons.js") %>"></script>
+    <script src="<%= static_path(@conn, "/js/phoenix_html.js") %>"></script>
     <script>window.userToken = "<%= assigns[:user_token] %>"</script>
   </head>
 
@@ -44,6 +45,5 @@
           <% end %>
       </footer>
     </div> <!-- /container -->
-    <script src="<%= static_path(@conn, "/js/phoenix_html.js") %>"></script>
   </body>
 </html>
