@@ -10,7 +10,7 @@ defmodule Rumbl.OAuthController do
 
     case Facebook.accessToken(cid, sec, redir, code) do
       %{ "access_token" => access_token, "expires_in" => expires_in } ->
-        case Rumbl.Auth.create_user_with_facebook(conn, access_token, expires_in, repo: Rumbl.Repo) do
+        case Rumbl.Auth.create_user_with_facebook(access_token, expires_in, repo: Rumbl.Repo) do
           {:ok, user = %Rumbl.User{ first_name: name, age_min: age_min, age_max: age_max, gender: gender }} ->
             # TODO get information about this code and insert it into the database
             # If it doesn't already exist, then bollocks.

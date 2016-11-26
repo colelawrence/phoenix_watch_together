@@ -78,7 +78,7 @@ defmodule Rumbl.Auth do
         })
   end
 
-  def create_user_with_facebook(conn, access_token, expires_in, opts) do
+  def create_user_with_facebook(access_token, expires_in, opts) do
     {:json, %{"id" => fb_id}} =
       Facebook.me([fields: "id"], access_token)
     
