@@ -8,14 +8,13 @@ defmodule Rumbl.Video do
     field :description, :string
     field :slug, :string
     belongs_to :user, Rumbl.User
-    belongs_to :category, Rumbl.Category
     has_many :annotations, Rumbl.Annotation
 
     timestamps()
   end
 
   @required_fields ~w(url title description)
-  @optional_fields ~w(category_id)
+  @optional_fields ~w()
 
   @doc """
   Builds a changeset based on the `model` and `params`.
@@ -24,7 +23,6 @@ defmodule Rumbl.Video do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> slugify_title()
-    |> assoc_constraint(:category)
     # |> validate_required([:url, :title, :description])
   end
 

@@ -1,5 +1,0 @@
-<h2>Categories</h2>
-
-<%= for {name, id} <- @current_categories do %>
-  <%= link name, to: category_path(@conn, :show, id), class: "btn btn-default btn-xs" %>
-<% end %>

@@ -8,24 +8,6 @@ defmodule Rumbl.VideoController do
           [conn, conn.params, conn.assigns.current_user])
   end
 
-  alias Rumbl.Category
-  plug :load_categories when action in [:new, :create, :edit, :update]
-  defp load_categories(conn, _) do
-    query =
-      Category
-      |> Category.alphabetical
-      |> Category.names_and_ids
-    # here, I was very tempted to just chain everything together
-    # so, it would be categories = \ Category |> alpha |> names_and_ids |> Repo.all
-    # but, this seemed to be a little bit too much, in terms of understnading what is going on
-    # by separating the code we get a clear picture of how the algorithm is sectioned out.
-    categories = Repo.all query
-
-    conn
-    |> assign(:categories, categories)
-    # now available at conn.assigns.categories
-  end
-
   def index(conn, _params, user) do
     videos = Repo.all(user_videos(user))
     render(conn, "index.html", videos: videos)

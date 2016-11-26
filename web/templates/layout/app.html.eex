@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="Watch Youtube Videos with your friends!">
     <meta name="author" content="Cole R Lawrence">
 
     <title>Hello Rumbl!</title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-    <script src="<%= static_path(@conn, "/js/commons.js") %>"></script>
-    <script src="<%= static_path(@conn, "/js/phoenix_html.js") %>"></script>
-    <script>window.userToken = "<%= assigns[:user_token] %>"</script>
+    <link name="app_styles" rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <script name="webpack_commons" src="<%= static_path(@conn, "/js/commons.js") %>"></script>
+    <script name="phoenix_html" src="<%= static_path(@conn, "/js/phoenix_html.js") %>"></script>
+    <script name="user_token">window.userToken = "<%= assigns[:user_token] %>"</script>
   </head>
 
   <body>
@@ -22,7 +22,6 @@
             <%= if @current_user do %>
             <li><%= @current_user.name %></li>
             <li><%= link "Group", to: group_path(@conn, :index) %></li>
-            <li><%= link "My Videos", to: video_path(@conn, :index) %></li>
             <li><%= link "Log out", to: session_path(@conn, :delete, @current_user), method: "delete" %></li>
             <% else %>
             <li><%= link "Register", to: user_path(@conn, :new) %></li>
@@ -38,13 +37,6 @@
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
-
-      <footer>
-        Categories:
-          <%= for {name, id} <- @current_categories do %>
-            <%= link name, to: category_path(@conn, :show, id), class: "comma-separated" %>
-          <% end %>
-      </footer>
     </div> <!-- /container -->
   </body>
 </html>

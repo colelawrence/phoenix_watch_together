@@ -8,7 +8,6 @@ defmodule Rumbl.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug Rumbl.Auth, repo: Rumbl.Repo
-    plug Rumbl.Navigation, repo: Rumbl.Repo
   end
 
   pipeline :api do
@@ -23,7 +22,6 @@ defmodule Rumbl.Router do
     resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/oauth", OAuthController, only: [:show]
     resources "/sessions", SessionController, only: [:new, :create, :delete, :fb_oauth]
-    resources "/categories", CategoryController, only: [:index, :show]
     get "/", PageController, :index
   end
 
