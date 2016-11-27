@@ -8,6 +8,8 @@ import * as R from '../shared/read';
 import { GroupWriter } from '../core/writers';
 import { DeviceStateService } from '../core/device-state.service'
 
+import { ResultVideoItem } from './youtube-video-search/youtube-video-search.component'
+
 import {Player} from './player'
 
 @Component({
@@ -122,9 +124,8 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
     this._groupWriter.castVideoVote(video, vote)
   }
 
-  proposeVideo(youtube_video_id: string) {
-    console.log("Proposing", youtube_video_id)
-    this._groupWriter.sendMessage(youtube_video_id)
+  proposeVideo(youtube_video: ResultVideoItem) {
+    this._groupWriter.sendMessage("Let's watch, " + youtube_video.title)
     // TODO send to groupwriter
     // this._groupWriter.
   }

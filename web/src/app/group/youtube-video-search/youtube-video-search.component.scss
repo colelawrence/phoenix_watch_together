@@ -1,12 +1,27 @@
 // component styles are encapsulated and only applied to their components
 :host {
   display: block;
-  padding: 32px;
+  position: relative;
+  @media (max-width: 700px) {
+    left: 0;
+    top: 0;
+    right: 0;
+  }
 }
 
 .search-interface {
   opacity: 1;
+  left: 0;
+  top: 0;
+  right: 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   position: absolute;
+  @media (max-width: 700px) {
+    position: fixed;
+    bottom: 0;
+    overflow-y: auto;
+  }
+  width: 100%;
   z-index: 10;
   background: white;
 
@@ -16,30 +31,72 @@
     opacity: 0;
   }
 
-  padding: 32px;
+  .search-header {
+    padding: 12px;
+    @media (max-width: 700px) {
+      padding: 7vw;
+    }
+  }
 
   .close-button {
     right: 32px;
     top: 32px;
     position: absolute;
+    z-index: 11;
+    @media (max-width: 700px) {
+      position: fixed;
+    }
   }
 
   .title {
-    font-size: 17vw;
+    font-size: 32px;
   }
 
   .video-results-list {
     font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    @media (max-width: 700px) {
+      font-size: 13px;
+    }
+    .video-result {
+      display: flex;
+      flex-direction: row;
 
-    .video-name {
-      font-weight: bold;
+      > div {
+        flex-grow: 2;
+      }
+
+      .video-thumb{
+        padding: 12px;
+        img {
+          width: auto;
+          height: 160px;
+          @media (max-width: 700px) {
+            position: absolute;
+            z-index: 0;
+            height: 100px;
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .video-info {
+        z-index: 1;
+        position: relative;
+        padding: 12px;
+        .title {
+          font-weight: bold;
+        }
+
+        .add-video-indicator {
+          display: inline-block;
+          width: 1ch;
+          height: 1ch;
+          border-radius: 1ch;
+        }
+      }
     }
 
-    .dot {
-      display: inline-block;
-      width: 1ch;
-      height: 1ch;
-      border-radius: 1ch;
-    }
   }
 }
