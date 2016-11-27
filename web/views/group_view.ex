@@ -2,33 +2,22 @@ defmodule Rumbl.GroupView do
   use Rumbl.Web, :view
 
   def render("group.json", %{group: group}) do
+    group =
+      group
+      |> Rumbl.Repo.preload(:video)
+      |> Rumbl.Repo.preload(:users)
+    
     %{
       id: group.id,
       name: group.name,
       listed: group.listed,
-    }
-  end
-
-  def render("error.json", %{reason: reason}) do
-    %{
-      error: reason
-    }
-  end
-
-  def render("message.json", %{message: msg}) do
-    %{
-      id: msg.id,
-      body: msg.body,
-      user_id: msg.user_id,
-    }
-  end
-
-  def render("video_proposal.json", %{proposal: vp}) do
-    %{
-      id: vp.id,
-      yt_id: vp.yt_id,
-      score: vp.score,
-      user_id: vp.user_id,
+      group_users: Phoenix.View.render_many(
+        group.users, Rumbl.GroupUserView, "group_user.json"
+      ),
+      video: Phoenix.View.render_one(
+        group.video, Rumbl.VideoView, "video.json"
+      ),
+      started_at: nil # TODO add to schema and update with each change in video
     }
   end
 end

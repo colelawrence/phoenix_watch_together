@@ -1,2 +1,29 @@
 
 List of groups show here
+
+<table class="table group-list" *ngIf="groups && groups.length">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Users</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let g of groups"
+        class="group-item">
+      <td class="group-name">{{ g.Name }}</td>
+      <td>
+        <span *ngFor="let user of g.Users"
+            class="comma-separated">
+          {{user.Name}}
+        </span>
+      </td>
+      <td>
+        <a [routerLink]="['/group', g.Id]" class="btn btn-default">
+          Open
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

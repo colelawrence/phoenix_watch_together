@@ -1,23 +1,21 @@
-defmodule Rumbl.AppChannel do
+defmodule Rumbl.GroupChannel do
   use Rumbl.Web, :channel
 
   alias Rumbl.GroupView
   alias Rumbl.UserView
-  def join("app", _params, socket) do
+  def join("groups:" <> group_id, _params, socket) do
+    { group_id, _ } = :string.to_integer(to_char_list(group_id))
     cond do
     socket.assigns.user_id ->
-      youtube_client_key = Application.get_env(:rumbl, :google)[:youtube_client_key]
-
-      {:ok, groups, _group_users, users} = get_groups(socket.assigns.user_id)
+      {:ok, group, users} = get_group(socket.assigns.user_id, group_id)
 
       resp = %{
-        groups: Phoenix.View.render_many(
-          groups, GroupView, "group.json"
+        group: Phoenix.View.render_one(
+          group, GroupView, "group.json"
         ),
         users: Phoenix.View.render_many(
           users, UserView, "user.json"
-        ),
-        ytkey: youtube_client_key,
+        )
       }
 
       {:ok, resp, socket}
@@ -44,14 +42,13 @@ defmodule Rumbl.AppChannel do
   alias Rumbl.User
   import Ecto.Query
 
-  defp get_groups(user_id) do
-    group_ids = Repo.all from gu in GroupUser,
-        where: gu.user_id == ^user_id,
-        select: gu.group_id
+  defp get_group(user_id, group_id) do
+    # invalid group? fail fast
+    group = Repo.get! Group, group_id
 
     # gather all users in your groups
     group_users = Repo.all from gu in GroupUser,
-        where: gu.group_id in ^group_ids
+        where: gu.group_id == ^group.id
     
     # gather all users
     user_ids = group_users
@@ -60,9 +57,6 @@ defmodule Rumbl.AppChannel do
     users = Repo.all from u in User,
         where: u.id in ^user_ids
 
-    groups = Repo.all from g in Group,
-        where: g.id in ^group_ids
-
-    {:ok, groups, group_users, users}
+    {:ok, group, users}
   end
 end

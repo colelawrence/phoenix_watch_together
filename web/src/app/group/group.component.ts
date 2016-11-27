@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, DoCheck, ElementRef } from '@angular/core';
 
-import { Router } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
 
 import { Subscription } from 'rxjs'
 
@@ -26,15 +26,24 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
   ytApiKey: string
 
   private _stateSub: Subscription;
+  private _arSub: Subscription;
   topVideo: R.VideoVote
-  group: R.Group
+  group: R.OpenGroup
   player: Player
 
   constructor(
       private _deviceStateService: DeviceStateService,
       private _groupWriter: GroupWriter,
+      private _activatedRoute: ActivatedRoute,
       private _elt: ElementRef,
       private _router: Router) {
+
+    this._arSub =
+		this._activatedRoute.params.subscribe(({id}) => {
+      console.log(`Get route "${id}"`)
+      this._groupWriter.setOpenGroup(id)
+    })
+
     this._stateSub =
     this._deviceStateService.state.subscribe(deviceState => {
       if (!deviceState.HasLoggedIn) {
@@ -43,16 +52,16 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
         return
       }
 
-      let isNotInGroup = deviceState.LoggedIn.Group == null
+      let isNotInGroup = deviceState.LoggedIn.OpenGroup == null
       if (isNotInGroup) {
         console.warn("Device State is not in Group")
         this._router.navigate(['/group-index'])
         return
       }
 
-      this.group = deviceState.LoggedIn.Group
+      this.group = deviceState.LoggedIn.OpenGroup
 
-      this.player = new Player("group-video", this.group.Playing.URL, () => {
+      this.player = new Player("group-video", this.group.Group.Playing.YT_Id, () => {
         console.log("Player ready!")
       })
     })
@@ -91,6 +100,7 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
   ngOnDestroy () {
     // Remove subscription to free up resources
     this._stateSub.unsubscribe()
+    this._arSub.unsubscribe()
   }
 
   ngDoCheck() {

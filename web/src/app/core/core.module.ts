@@ -9,7 +9,7 @@ import { FormsModule }  from '@angular/forms';
 import { DeviceStateService } from './device-state.service';
 import { SocketService }      from './phoenix/socket.service';
 import {
-  GroupWriter,
+  AppWriter, GroupWriter,
 } from '../core/writers';
 @NgModule({
   imports:      [ CommonModule, HttpModule, FormsModule ],
@@ -19,6 +19,7 @@ import {
     DeviceStateService,
     SocketService,
 
+		AppWriter,
     GroupWriter,
   ]
 })

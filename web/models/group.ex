@@ -4,6 +4,7 @@ defmodule Rumbl.Group do
   schema "groups" do
     field :name, :string
     field :listed, :integer
+    belongs_to :video, Rumbl.Video
 
     has_many :users, Rumbl.GroupUser
     has_many :messages, Rumbl.GroupMessage
