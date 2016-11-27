@@ -65,6 +65,7 @@ const States = <{[key: string]: R.DeviceState}> {
       User: ua0,
       Group: {
 				Playing: v0,
+        YTApiKey: null,
         Users: [
           ua1, ua2, ua3, ua4, ua5
         ],

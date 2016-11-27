@@ -5,6 +5,7 @@ defmodule Rumbl.UserSocket do
 
   channel "videos:*", Rumbl.VideoChannel
   channel "ping", Rumbl.PingChannel
+  channel "app", Rumbl.AppChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

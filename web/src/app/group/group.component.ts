@@ -8,6 +8,8 @@ import * as R from '../shared/read';
 import { GroupWriter } from '../core/writers';
 import { DeviceStateService } from '../core/device-state.service'
 
+import { ResultVideoItem } from './youtube-video-search/youtube-video-search.component'
+
 import {Player} from './player'
 
 @Component({
@@ -21,6 +23,7 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
   private _lastScrolledInMessage: any
 
   messageInput: string
+  ytApiKey: string
 
   private _stateSub: Subscription;
   topVideo: R.VideoVote
@@ -64,20 +67,24 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
 
     const elt = <HTMLElement> document.body
     const checkToDismiss = ({target}) => {
-      let hasVoteParent = null != findParent(
+      let childOfVote: boolean
+      let childOfAddVideo: boolean
+      let hasModalParent = null != findParent(
         <HTMLElement> target, // start node
         (t) => { // Test to find parent
-          return -1 < t.className.indexOf("vote-")
+          childOfVote = -1 < t.className.indexOf("vote-")
+          childOfAddVideo = -1 < t.tagName.toLowerCase().indexOf("youtube-video-search")
+          return childOfVote || childOfAddVideo
         })
-      if (!hasVoteParent) {
-        this._clickOff()
+      if (!hasModalParent) {
+        this.closeModal()
       }
     }
     elt.addEventListener("touchstart", checkToDismiss)
     elt.addEventListener("mousedown", checkToDismiss)
   }
 
-  private _clickOff() {
+  private closeModal() {
     this._groupWriter.setModalOpen(null)
   }
 
@@ -106,11 +113,21 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   clickVoteVideo() {
-    this._groupWriter.setModalOpen('video')
+    this._groupWriter.setModalOpen('vote-video')
+  }
+
+  clickAddVideo() {
+    this._groupWriter.setModalOpen('add-video')
   }
 
   setVoteVideo(video: R.VideoVote, vote: boolean) {
     this._groupWriter.castVideoVote(video, vote)
+  }
+
+  proposeVideo(youtube_video: ResultVideoItem) {
+    this._groupWriter.sendMessage("Let's watch, " + youtube_video.title)
+    // TODO send to groupwriter
+    // this._groupWriter.
   }
 
   clickSendMessage() {

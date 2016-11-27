@@ -9,78 +9,86 @@
 
 
 <div *ngIf="group" class="row">
+  <div class="window-topbar col-xs-12">
+    <button class="btn btn-default" (click)="clickLeaveGroup()">Leave</button>
+    <div class="video-name" *ngIf="group.Playing">{{ group.Playing.Name }}</div>
+    <button *ngIf="group.YTApiKey"
+        class="btn btn-default"
+        (click)="clickAddVideo()">+</button>
+    
+    <wt-youtube-video-search *ngIf="group.YTApiKey"
+      [isOpen]="group.ModalOpen === 'add-video'"
+      [apiKey]="group.YTApiKey"
+      (addVideo)="proposeVideo($event)"
+      (clickClose)="closeModal()">
+    </wt-youtube-video-search>
 
-
-<div class="window-topbar">
-  <button class="btn btn-default" (click)="clickLeaveGroup()">Leave</button>
-  <div class="video-name" *ngIf="group.Playing">{{ group.Playing.Name }}</div>
-  <br>
-  <div class="user-list">
-    <span *ngFor="let user of group.Users" class="comma-separated">
-      <b>?</b>
-      <span>{{ user.Name }}</span>
-      <i>...</i>
-    </span>
+    <div class="user-list">
+      <span *ngFor="let user of group.Users" class="comma-separated">
+        <b>?</b>
+        <span>{{ user.Name }}</span>
+        <i>...</i>
+      </span>
+    </div>
   </div>
 </div>
 
-<div class="group-video-height col-sm-6">
-  <div id="group-video"></div>
-</div>
+<div *ngIf="group" class="row">
+  <div class="group-video-height col-sm-6">
+    <div id="group-video"></div>
+  </div>
 
-<div class="col-sm-6">
-  <div class="vote-next-video">
-    <div class="vote-button location"
-        (click)="clickVoteVideo()"
-        [class.active]="group.ModalOpen === 'video'">
-      <!--This loop forces it to redraw the element so we can put animations on it-->
-      <div *ngFor="let top of [topVideo]" class="top-voted">
-        <div class="vote-count">{{ top.VoteCount }}</div>
-        <div class="vote-label">{{ top.Video.Name }}</div>
+  <div class="col-sm-6">
+    <div class="vote-next-video">
+      <div class="vote-button location"
+          (click)="clickVoteVideo()"
+          [class.active]="group.ModalOpen === 'vote-video'">
+        <!--This loop forces it to redraw the element so we can put animations on it-->
+        <div *ngFor="let top of [topVideo]" class="top-voted">
+          <div class="vote-count">{{ top.VoteCount }}</div>
+          <div class="vote-label">{{ top.Video.Name }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vote-dropdown location"
+        [class.dropdown-open]="group.ModalOpen === 'vote-video'">
+      <div class="dropdown-caret"></div>
+      <div class="dropdown-header">
+        <div class="label">Vote for Video</div>
+      </div>
+      <div class="dropdown-items">
+        <div *ngFor="let vidVote of group.VideoVotes"
+            class="item"
+            (click)="setVoteVideo(vidVote, !vidVote.HasVote)"
+            [attr.data-active]="vidVote.HasVote">
+          <div class="vote-count">{{ vidVote.VoteCount }}</div>
+          <div class="item-title">{{ vidVote.Video.Name }}</div>
+          <div class="item-desc">{{ vidVote.Video.Desc || '' }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-inline">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Message"
+            [(ngModel)]="messageInput"
+            (keydown)="$event.keyCode === 13 ? clickSendMessage() : true">
+            <!--If the keyCode is 13, (enter key) then send else true so it doesn't get cancelled-->
+        <button class="btn btn-primary" (click)="clickSendMessage()">Send</button>
+      </div>
+    </div>
+
+    <div class="message-window">
+      <!--List of messages-->
+      <div *ngFor="let message of group.Messages"
+          class="message">
+        <div class="header">
+          <span class="sender">{{ message.User.Name }}</span>
+          <span class="date">{{ message.Date | date:"h:mm a" }}</span>
+        </div>
+        <span class="text">{{ message.Text }}</span>
       </div>
     </div>
   </div>
-
-  <div class="vote-dropdown location"
-      [class.dropdown-open]="group.ModalOpen === 'video'">
-    <div class="dropdown-caret"></div>
-    <div class="dropdown-header">
-      <div class="label">Vote for Video</div>
-    </div>
-    <div class="dropdown-items">
-      <div *ngFor="let vidVote of group.VideoVotes"
-          class="item"
-          (click)="setVoteVideo(vidVote, !vidVote.HasVote)"
-          [attr.data-active]="vidVote.HasVote">
-        <div class="vote-count">{{ vidVote.VoteCount }}</div>
-        <div class="item-title">{{ vidVote.Video.Name }}</div>
-        <div class="item-desc">{{ vidVote.Video.Desc || '' }}</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="form-inline">
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="Message"
-          [(ngModel)]="messageInput"
-          (keydown)="$event.keyCode === 13 ? clickSendMessage() : true">
-          <!--If the keyCode is 13, (enter key) then send else true so it doesn't get cancelled-->
-      <button class="btn btn-primary" (click)="clickSendMessage()">Send</button>
-    </div>
-  </div>
-
-  <div class="message-window">
-    <!--List of messages-->
-    <div *ngFor="let message of group.Messages"
-        class="message">
-      <div class="header">
-        <span class="sender">{{ message.User.Name }}</span>
-        <span class="date">{{ message.Date | date:"h:mm a" }}</span>
-      </div>
-      <span class="text">{{ message.Text }}</span>
-    </div>
-  </div>
-
-</div>
-
 </div>

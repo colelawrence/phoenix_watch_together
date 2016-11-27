@@ -46,9 +46,10 @@ interface LoggedIn {
 export
 interface Group {
   Playing: Video
+  YTApiKey: string
   Users: User[]
   Messages: GroupMessage[]
-  ModalOpen: "video" | null
+  ModalOpen: "vote-video" | "add-video" | null
   VideoVotes: VideoVote[]
   SkipVote: SkipVote
 }
