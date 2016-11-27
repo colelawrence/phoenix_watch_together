@@ -1,0 +1,14 @@
+
+<div class="search-interface" [class.search-open]="isOpen">
+  <div class="title">Search</div>
+  <input type="text" class="input" placeholder="Search videos" [(ngModel)]="searchInput"
+      (keydown)="$event.keyCode === 13 ? clickSearch() : true">
+  <div class="video-results-list">
+    <div class="video-name" *ngFor="let video of searchResults">
+      {{ video | json }}
+      <div class="add-video btn btn-default"
+          (click)="clickAddVideo(video)">+</div>
+    </div>
+  </div>
+  <button class="close-button btn btn-default" (click)="clickCloseSearch()">&times;</button>
+</div>

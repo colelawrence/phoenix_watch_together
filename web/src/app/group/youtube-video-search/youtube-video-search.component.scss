@@ -1,0 +1,45 @@
+// component styles are encapsulated and only applied to their components
+:host {
+  display: block;
+  padding: 32px;
+}
+
+.search-interface {
+  opacity: 1;
+  position: absolute;
+  z-index: 10;
+  background: white;
+
+  transition: all .2s ease-in;
+  &:not(.search-open) {
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  padding: 32px;
+
+  .close-button {
+    right: 32px;
+    top: 32px;
+    position: absolute;
+  }
+
+  .title {
+    font-size: 17vw;
+  }
+
+  .video-results-list {
+    font-size: 16px;
+
+    .video-name {
+      font-weight: bold;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 1ch;
+      height: 1ch;
+      border-radius: 1ch;
+    }
+  }
+}

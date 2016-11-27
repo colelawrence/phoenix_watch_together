@@ -34,6 +34,12 @@ export class GroupWriter {
     this.pingChannel.join()
       .receive("ok", (resp) => {
         console.log("Joined the Ping Channel", resp)
+        // TODO Relocate this logic...
+        let currentState = this._dss.getState()
+
+        currentState.LoggedIn.Group.YTApiKey = this.phoenix_socket.ytkey
+
+        this._dss.updateState(currentState)				
       })
       .receive("error", reason => console.log("Join Failed", reason))
   }
@@ -59,7 +65,7 @@ export class GroupWriter {
     this._dss.updateState(currentState)
   }
 	
-  setModalOpen(modalId: "video" | null) {
+  setModalOpen(modalId: "vote-video" | "add-video" | null) {
     let currentState = this._dss.getState()
 
     currentState.LoggedIn.Group.ModalOpen = modalId
