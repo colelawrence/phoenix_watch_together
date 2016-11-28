@@ -62,8 +62,11 @@ defmodule Rumbl.Auth do
       "name" => name,
       "first_name" => first_name,
       "gender" => gender,
-      "age_range" => %{ "max" => age_max, "min" => age_min }}} =
+      "age_range" => age_range}} =
       Facebook.me([fields: "id,name,first_name,gender,age_range"], access_token)
+
+    age_max = age_range |> Map.get "max"
+    age_min = age_range |> Map.get "min"
 
     user
       |> User.changeset(%{
