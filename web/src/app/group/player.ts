@@ -25,6 +25,7 @@ class Player {
   onIframeReady(domId, playerId, onReady) {
     this.player = new YT.Player(domId, {
       width: "420", height: "360", videoId: playerId,
+      playerVars: { rel: 0 },
       events: {
         "onReady": (event => onReady(event)),
         "onStateChange": (evt) => this.onstatechange ? this.onstatechange(evt) : null
