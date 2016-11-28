@@ -24,11 +24,11 @@ defmodule Rumbl.User do
     timestamps
   end
 
-  @required_fields ~w(first_name name gender age_min age_max fb_id)
+  @allowed_fields ~w(first_name name gender age_min age_max fb_id)
 
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields)
+    |> cast(params, @allowed_fields)
     |> unique_constraint(:fb_id) # TODO handle error from this contstraint
   end
 end
