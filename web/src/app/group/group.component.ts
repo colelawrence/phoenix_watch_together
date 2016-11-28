@@ -25,8 +25,9 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
   messageInput: string
   YTApiKey: string
 
-  private _stateSub: Subscription;
-  private _arSub: Subscription;
+  private _stateSub: Subscription
+  private _arSub: Subscription
+  private _coolDownUntil: number
   topVideo: R.VideoVote
   group: R.OpenGroup
   player: Player
@@ -58,10 +59,18 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
 
       console.log("UpdateState: this.group.Group", this.group && this.group.Group)
 			if (this.group && this.group.Group.Playing) {
+        let isPlaying = this.group.Group.State === "play"
+        let seekTo = 0
+        if (isPlaying) {
+          seekTo = this.diffStartedAt(this.group.Group.PlayStartedAt)
+        } else {
+          seekTo = this.group.Group.PausePlayerAt
+        }
 				let videoId = this.group.Group.Playing.Video.YT_Id
-        let seekTo = this.diffStartedAt(this.group.Group.PlayStartedAt)
         if (this.player) {
-          const currentUrl = this.player.player.getVideoUrl()
+          this.startCoolDown()
+          this.player.setPlaying(isPlaying)
+          const currentUrl = this.player.player && this.player.player.getVideoUrl()
           if (!currentUrl || currentUrl.indexOf(videoId) === -1) {
             this.player.loadVideoId(videoId, seekTo)
           } else {
@@ -79,19 +88,26 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
         } else {
           // Set up Youtube Player
           this.player = new Player("group-video", videoId, () => {
-            let seekTo = this.diffStartedAt(this.group.Group.PlayStartedAt)
+            this.startCoolDown()
             this.player.seekTo(seekTo)
+            this.player.setPlaying(isPlaying)
 
             this.player.onstatechange = ({ data: state }) => {
+							let currentTime = this.player.getCurrentTime()
+
+							let send = true
+              if (this._coolDownUntil > Date.now()) send = false
+              else this._coolDownUntil = 0
+
               console.log("Player State", ["unstarted","ended","playing","paused","buffering",null,"cued"][state+1])
               switch(state) {
                 case 2:
-                  // console.log("++++STOPPED")
-                  this._groupWriter.pauseAt(this.player.getCurrentTime())
+                  console.log("++++STOPPED Send:", send)
+                  send && setTimeout(() => this._groupWriter.pauseAt(currentTime), 10)
                   break
                 case 1:
-                  // console.log("++++PLAYING")
-                  this._groupWriter.playAt(this.player.getCurrentTime())
+                  console.log("++++PLAYING Send:", send)
+                  send && setTimeout(() => this._groupWriter.playAt(currentTime), 10)
                   break
               }
             }
@@ -101,6 +117,12 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
         if (this.player) this.player.setPlaying(false)
       }
     })
+  }
+
+	// Set a cooldown timer for sending updates to the backend
+	private startCoolDown(){
+    // one sec in the future
+    this._coolDownUntil = Date.now() + 1000
   }
 
   diffStartedAt(started_at_utc: string) {
