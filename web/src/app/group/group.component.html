@@ -11,14 +11,13 @@
 <div *ngIf="group" class="row">
   <div class="window-topbar col-xs-12">
     <button class="btn btn-default" (click)="clickLeaveGroup()">Leave</button>
-    <div class="video-name" *ngIf="group.Playing">{{ group.Playing.Name }}</div>
-    <button *ngIf="group.YTApiKey"
-        class="btn btn-default"
-        (click)="clickAddVideo()">+</button>
-    
-    <wt-youtube-video-search *ngIf="group.YTApiKey"
+    <div class="group-name">{{ group.Group.Name }}</div>
+    <button class="btn btn-default"
+        (click)="clickAddVideo()">Suggest Video</button>
+
+    <wt-youtube-video-search
       [isOpen]="group.ModalOpen === 'add-video'"
-      [apiKey]="group.YTApiKey"
+      [apiKey]="YTApiKey"
       (addVideo)="proposeVideo($event)"
       (clickClose)="closeModal()">
     </wt-youtube-video-search>
@@ -33,14 +32,17 @@
   </div>
 </div>
 
-<div *ngIf="group" class="row">
-  <div class="group-video-height col-sm-6">
+<div *ngIf="group != null" class="row">
+  <div class="group-video-height col-sm-6" [class.hide-video]="!group.Group.Playing">
     <div id="group-video"></div>
+  </div>
+  <div class="group-video-height col-sm-6" [class.hide-video]="group.Group.Playing">
+    <div class="no-playing">Suggest a video to play next!</div>
   </div>
 
   <div class="col-sm-6">
     <div class="vote-next-video">
-      <div class="vote-button location"
+      <div class="vote-button location" *ngIf="topVideo"
           (click)="clickVoteVideo()"
           [class.active]="group.ModalOpen === 'vote-video'">
         <!--This loop forces it to redraw the element so we can put animations on it-->
@@ -48,6 +50,10 @@
           <div class="vote-count">{{ top.VoteCount }}</div>
           <div class="vote-label">{{ top.Video.Name }}</div>
         </div>
+      </div>
+      <div class="play-next-video" (click)="clickPlayNext()" *ngIf="topVideo">
+        <span>Play</span>
+        <span class="play-button"></span>
       </div>
     </div>
 

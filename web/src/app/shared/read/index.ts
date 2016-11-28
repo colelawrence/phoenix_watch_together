@@ -51,8 +51,10 @@ interface Group {
   Id: string
   Name: string
   Users: User[]
-  Playing?: Video
-  StartedAt?: number
+  Playing?: VideoVote
+  State: "play" | "pause"
+  PlayStartedAt?: string
+  PausePlayerAt?: number
 }
 
 export
@@ -90,6 +92,7 @@ interface Video {
 
 export
 interface User {
+  Id: number,
   Name: string
   ProfilePicture?: SafeResourceUrl
   // Gender?: 'm' | 'f' | 'u' // may use later
@@ -97,6 +100,7 @@ interface User {
 
 export
 interface GroupMessage {
+  Id: number,
   User: User
   Text: string
   Date: Date

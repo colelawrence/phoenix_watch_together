@@ -4,7 +4,12 @@ defmodule Rumbl.Group do
   schema "groups" do
     field :name, :string
     field :listed, :integer
-    belongs_to :video, Rumbl.Video
+
+    field :started_at, Ecto.DateTime
+    field :paused_at, :integer
+    field :is_playing, :boolean
+
+    belongs_to :group_video_proposal, Rumbl.GroupVideoProposal
 
     has_many :users, Rumbl.GroupUser
     has_many :messages, Rumbl.GroupMessage
@@ -19,7 +24,12 @@ defmodule Rumbl.Group do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :listed])
+    |> cast(params, [
+      :name, :listed, :group_video_proposal_id,
+      :started_at,
+      :is_playing,
+      :paused_at,
+    ])
     |> validate_required([:name, :listed])
   end
 end

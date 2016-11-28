@@ -23,7 +23,7 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
   private _lastScrolledInMessage: any
 
   messageInput: string
-  ytApiKey: string
+  YTApiKey: string
 
   private _stateSub: Subscription;
   private _arSub: Subscription;
@@ -52,23 +52,48 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
         return
       }
 
-      let isNotInGroup = deviceState.LoggedIn.OpenGroup == null
-      if (isNotInGroup) {
-        console.warn("Device State is not in Group")
-        this._router.navigate(['/group-index'])
-        return
-      }
+      this.YTApiKey = deviceState.LoggedIn.YTApiKey
 
       this.group = deviceState.LoggedIn.OpenGroup
 
-      this.player = new Player("group-video", this.group.Group.Playing.YT_Id, () => {
-        console.log("Player ready!")
-      })
+      console.log("UpdateState: this.group.Group", this.group && this.group.Group)
+			if (this.group && this.group.Group.Playing) {
+				let videoId = this.group.Group.Playing.Video.YT_Id
+        let seekTo = this.diffStartedAt(this.group.Group.PlayStartedAt)
+        if (this.player) {
+          const currentUrl = this.player.player.getVideoUrl()
+          if (!currentUrl || currentUrl.indexOf(videoId) === -1) {
+            this.player.loadVideoId(videoId, seekTo)
+          } else {
+            // Same video
+
+            // Check if video is in different time then our model expects
+            let diff = Math.abs(this.player.getCurrentTime() - seekTo)
+
+            if (diff > 2000) {
+							// seekTo if time is diff greater than 2 seconds
+              console.log("Player became out of sync", diff)
+              this.player.seekTo(seekTo)
+            }
+          }
+        } else {
+          // Set up Youtube Player
+          this.player = new Player("group-video", videoId, () => {
+            let seekTo = this.diffStartedAt(this.group.Group.PlayStartedAt)
+            this.player.seekTo(seekTo)
+          })
+        }
+      } else {
+        if (this.player) this.player.setPlaying(false)
+      }
     })
   }
 
-	clickLeaveGroup() {
-    this._groupWriter.leaveGroup()
+  diffStartedAt(started_at_utc: string) {
+    let utc_ms = Date.parse(started_at_utc)
+    let started_at = new Date(utc_ms)
+		let diff = Date.now() - utc_ms
+    return diff
   }
 
   ngOnInit() {
@@ -104,6 +129,8 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   ngDoCheck() {
+    if (!this.group) return
+
     // If the latest message changes, scroll to it.
     const elt = <HTMLElement> this._elt.nativeElement
     const lastMessage = elt.querySelector(".message:last-child")
@@ -115,7 +142,20 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
 
     // update top votes
     // TODO Top Video Votes
-    this.topVideo = this.group.VideoVotes.reduce((prev, curr) => curr.VoteCount > prev.VoteCount ? curr : prev)
+    if (this.group.VideoVotes.length) {
+      this.topVideo = this.group.VideoVotes.reduce((prev, curr) => curr.VoteCount > prev.VoteCount ? curr : prev)
+    } else {
+      this.topVideo = null
+    }
+  }
+
+	clickLeaveGroup() {
+    this._groupWriter.leaveGroup()
+    this._router.navigate(['/group-index'])
+  }
+
+	clickPlayNext() {
+    this._groupWriter.playNext()
   }
 
   sendMessage(messageText: string) {
@@ -135,7 +175,13 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   proposeVideo(youtube_video: ResultVideoItem) {
-    this._groupWriter.sendMessage("Let's watch, " + youtube_video.title)
+    this._groupWriter.proposeVideo(<R.Video> {
+      Id: null,
+      YT_Id: youtube_video.yt_id,
+      Name: youtube_video.title,
+      Desc: youtube_video.desc,
+      ThumbnailURL: youtube_video.thumbnails.medium.url,
+    })
     // TODO send to groupwriter
     // this._groupWriter.
   }

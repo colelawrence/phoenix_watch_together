@@ -8,6 +8,12 @@
   height: 400px;
   background: rgba(0,0,0,.4);
   max-height: 80vh;
+
+  &.hide-video {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+  }
 }
 .window-topbar {
   position: relative;
@@ -16,7 +22,7 @@
     vertical-align: text-bottom;
   }
 
-  .video-name {
+  .group-name {
     text-align: center;
     display: inline-block;
     font-weight: bold;

@@ -20,9 +20,12 @@ interface Group_groupjson {
   id: number
   name: string
   listed: number
-	video?: Video_videojson
+  // currently playing proposal
+	group_video_proposal?: GroupVideoProposal_group_video_proposaljson
   group_users: GroupUser_group_userjson[]
-  started_at?: Date // TODO
+  is_playing: boolean
+  started_at?: string
+  paused_at?: number
 }
 export
 function Group(g: Group_groupjson, users: User_userjson[]) {
@@ -32,13 +35,17 @@ function Group(g: Group_groupjson, users: User_userjson[]) {
       g.group_users
       .map(({user_id})=>getUser(user_id))
       .map(User)
-  
+
   return <R.Group> {
     Id: String(g.id),
     Name: g.name,
     Users: Users,
-    Playing: g.video ? Video(g.video) : null,
-    StartedAt: null, // TODO
+
+    Playing: g.group_video_proposal ? VideoVote(g.group_video_proposal, false) : null,
+
+		State: g.is_playing ? 'play' : 'pause', 
+    PlayStartedAt: g.started_at,
+    PausePlayerAt: g.paused_at,
   }
 }
 
@@ -49,10 +56,29 @@ interface GroupUser_group_userjson {
 }
 
 export
+interface Message_messagejson {
+  id: number
+  body: string
+  user_id: number
+}
+export
+function GroupMessage(m: Message_messagejson, users: User_userjson[]) {
+  const getUser = (id) => users.find(u => u.id == id)
+
+  return <R.GroupMessage> {
+    Id: m.id,
+    User: User(getUser(m.user_id)),
+    Text: m.body,
+    Date: new Date()
+  }
+}
+
+export
 interface Video_videojson {
 	id: number
   yt_id: string
   name: string
+  description: string
   thumb: string
 }
 export
@@ -68,20 +94,16 @@ function Video(v: Video_videojson) {
 export
 interface GroupVideoProposal_group_video_proposaljson {
   id: number
-  yt_id: string
   score: number
   group_id: number
   user_id: number
+  video: Video_videojson
 }
 export
 function VideoVote(gvp: GroupVideoProposal_group_video_proposaljson, hasVote: boolean) {
   return <R.VideoVote> {
     ProposalId: gvp.id,
-    Video: {
-      Id: null,
-      Name: null,
-      YT_Id: gvp.yt_id,
-    },
+    Video: Video(gvp.video),
 		VoteCount: gvp.score,
 		HasVote: hasVote,
   }

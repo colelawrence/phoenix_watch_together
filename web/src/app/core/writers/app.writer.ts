@@ -9,6 +9,13 @@ import { SocketService } from "../phoenix/socket.service"
 
 import {Socket,Channel} from 'phoenix'
 
+interface appOk {
+  ytkey: string,
+  user: B.User_userjson,
+  groups: B.Group_groupjson[],
+  users: B.User_userjson[]
+}
+
 @Injectable()
 export class AppWriter {
 
@@ -20,11 +27,12 @@ export class AppWriter {
     this.appChannel = this.phoenix_socket.socket.channel('app')
 
     this.appChannel.join()
-    	.receive("ok", ({ytkey, groups, users}: {ytkey: string, groups: B.Group_groupjson[], users: B.User_userjson[]}) => {
+    	.receive("ok", ({ytkey, groups, users, user}: appOk) => {
         console.log("Connected to app channel.")
 
         let currentState = this._dss.getState()
         currentState.LoggedIn.YTApiKey = ytkey
+        currentState.LoggedIn.User = B.User(user)
 
 				const getUser = (id) => users.find(u => u.id == id)
 

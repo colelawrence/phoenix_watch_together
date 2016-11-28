@@ -64,10 +64,25 @@ $vote-label: $white-smoke;
   }
 
   .vote-button.location {
-    width: 70%;
+    width: 80%;
   }
-  .vote-button.time {
-    width: 30%;
+  .play-next-video {
+    width: 20%;
+    text-align: center;
+    color: $white-smoke;
+    padding: 4px 0;
+    background: transparentize($vote-count, .2);
+
+    .play-button {
+      margin-left: .1em;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      display: inline-block;
+      vertical-align: baseline;
+      border-width: .4em 0 .4em .4em;
+      border-color: transparent transparent transparent $white-smoke;
+    }
   }
 
   .vote-count, .vote-label {

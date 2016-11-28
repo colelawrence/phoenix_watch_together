@@ -3,21 +3,27 @@ defmodule Rumbl.AppChannel do
 
   alias Rumbl.GroupView
   alias Rumbl.UserView
+  alias Rumbl.User
   def join("app", _params, socket) do
     cond do
     socket.assigns.user_id ->
       youtube_client_key = Application.get_env(:rumbl, :google)[:youtube_client_key]
 
+      user = Repo.get! User, socket.assigns.user_id
       {:ok, groups, _group_users, users} = get_groups(socket.assigns.user_id)
 
+
       resp = %{
+        ytkey: youtube_client_key,
+        user: Phoenix.View.render_one(
+          user, UserView, "user.json"
+        ),
         groups: Phoenix.View.render_many(
           groups, GroupView, "group.json"
         ),
         users: Phoenix.View.render_many(
           users, UserView, "user.json"
         ),
-        ytkey: youtube_client_key,
       }
 
       {:ok, resp, socket}

@@ -3,17 +3,18 @@ defmodule Rumbl.Video do
 
   @primary_key {:id, Rumbl.Permalink, autogenerate: true}
   schema "videos" do
-    field :url, :string
-    field :title, :string
+    field :yt_id, :string
+    field :name, :string
     field :description, :string
     field :slug, :string
-    belongs_to :user, Rumbl.User
+    field :thumb, :string
+
     has_many :annotations, Rumbl.Annotation
 
     timestamps()
   end
 
-  @required_fields ~w(url title description)
+  @required_fields ~w(yt_id name description)
   @optional_fields ~w()
 
   @doc """
@@ -22,13 +23,13 @@ defmodule Rumbl.Video do
   def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields, @optional_fields)
-    |> slugify_title()
-    # |> validate_required([:url, :title, :description])
+    |> slugify_name()
+    # |> validate_required([:yt_id, :name, :description])
   end
 
-  defp slugify_title(changeset) do
-    if title = get_change(changeset, :title) do
-      put_change(changeset, :slug, slugify(title))
+  defp slugify_name(changeset) do
+    if name = get_change(changeset, :name) do
+      put_change(changeset, :slug, slugify(name))
     else
       changeset
     end
