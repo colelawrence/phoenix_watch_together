@@ -5,7 +5,7 @@ import { GroupComponent }    from './group.component';
 
 @NgModule({
   imports: [RouterModule.forChild([
-    { path: 'group', component: GroupComponent }
+    { path: 'group/:id', component: GroupComponent }
   ])],
   exports: [RouterModule]
 })

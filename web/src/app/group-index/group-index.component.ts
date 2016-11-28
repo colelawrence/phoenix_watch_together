@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs'
 
 import * as R from '../shared/read';
 // import { GroupIndexWriter } from '../core/writers';
+import { AppWriter } from '../core/writers';
 import { DeviceStateService } from '../core/device-state.service'
 
 
@@ -18,11 +19,14 @@ import { DeviceStateService } from '../core/device-state.service'
 export class GroupIndexComponent implements OnInit, OnDestroy {
   private _stateSub: Subscription
 
+  groups: R.Group[]
+
   constructor(
       private _deviceStateService: DeviceStateService,
       // private _groupIndexWriter: GroupIndexWriter,
       private _elt: ElementRef,
-      private _router: Router) {
+      private _router: Router,
+      private _appWriter: AppWriter) {
     this._stateSub =
     this._deviceStateService.state.subscribe(deviceState => {
       if (!deviceState.HasLoggedIn) {
@@ -30,11 +34,14 @@ export class GroupIndexComponent implements OnInit, OnDestroy {
         window.location.href = "/session/new"
         return
       }
-      if (deviceState.LoggedIn.Group) {
+
+      this.groups = deviceState.LoggedIn.Groups
+      /*
+      if (deviceState.LoggedIn.OpenGroup) {
         // Redirect to this person's group
-        this._router.navigate(["group"])
+        this._router.navigate(["group", deviceState.LoggedIn.Group.GroupId])
         return
-      }
+      }*/
     })
   }
 
@@ -48,6 +55,6 @@ export class GroupIndexComponent implements OnInit, OnDestroy {
   }
 
   clickGroupIndex() {
-    // this._groupIndexWriter.attemptGroupIndex()
+    
   }
 }

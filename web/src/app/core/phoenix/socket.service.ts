@@ -14,9 +14,10 @@ export class SocketService {
     this.socket = new Socket("/socket", {
       params: {token: window.userToken},
       logger: (kind, msg, data) => {
-        console.log(`${kind}:`, msg, data)
+        console.log(`%c ${kind}: ${msg}`, 'color: #aaa', data)
       }
     })
+
     this.socket.connect()
   }
 }

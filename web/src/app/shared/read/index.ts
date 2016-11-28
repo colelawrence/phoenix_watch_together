@@ -39,16 +39,29 @@ interface LoggedIn {
   // required
   User?: User
   Credentials?: FacebookAuth
+  YTApiKey: string
 
-  Group?: Group
+  Groups?: Group[]
+
+  OpenGroup?: OpenGroup
 }
 
 export
 interface Group {
-  Playing: Video
+  Id: string
+  Name: string
   Users: User[]
+  Playing?: VideoVote
+  State: "play" | "pause"
+  PlayStartedAt?: string
+  PausePlayerAt?: number
+}
+
+export
+interface OpenGroup {
+  Group: Group,
   Messages: GroupMessage[]
-  ModalOpen: "video" | null
+  ModalOpen: "vote-video" | "add-video" | null
   VideoVotes: VideoVote[]
   SkipVote: SkipVote
 }
@@ -61,7 +74,7 @@ interface SkipVote {
 
 export
 interface VideoVote {
-  Id: string
+  ProposalId: number
   Video: Video
   VoteCount: number
   HasVote: boolean
@@ -69,12 +82,17 @@ interface VideoVote {
 
 export
 interface Video {
+  Id: number,
+  YT_Id: string
   Name: string
-  URL: string
+  Desc?: string
+  // default thumbnail url
+  ThumbnailURL?: SafeResourceUrl
 }
 
 export
 interface User {
+  Id: number,
   Name: string
   ProfilePicture?: SafeResourceUrl
   // Gender?: 'm' | 'f' | 'u' // may use later
@@ -82,6 +100,7 @@ interface User {
 
 export
 interface GroupMessage {
+  Id: number,
   User: User
   Text: string
   Date: Date

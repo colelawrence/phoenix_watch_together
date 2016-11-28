@@ -17,7 +17,7 @@ defmodule Rumbl.Router do
   scope "/", Rumbl do
     pipe_through :browser # Use the default browser stack
 
-    resources "/group", GroupController, only: [:index]
+    resources "/groups", GroupController, only: [:index, :new, :create]
     resources "/watch", WatchController, only: [:show]
     resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/oauth", OAuthController, only: [:show]

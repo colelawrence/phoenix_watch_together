@@ -3,6 +3,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { DeviceStateService } from './core/device-state.service'
+
+// We need AppWriter to be initiallized in order to obtain initial information from backend
+import { AppWriter } from './core/writers'
+
 import { DeviceState, LanguageType } from './shared/read'
 
 @Component({
@@ -16,13 +20,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private _stateSub: Subscription;
 
-  constructor(private _deviceStateService: DeviceStateService) {
+  constructor(
+    	private _deviceStateService: DeviceStateService,
+  		private _appWriter: AppWriter) {
     this._stateSub =
     this._deviceStateService.state.subscribe(deviceState => {
       this.deviceState = deviceState
     })
-
-    console.log("AppComponent", this._deviceStateService.getState())
 
     if (!this._deviceStateService.getState()) {
       this._deviceStateService.setDefaultState()

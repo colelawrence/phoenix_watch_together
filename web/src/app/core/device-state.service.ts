@@ -71,7 +71,7 @@ export class DeviceStateService {
   }
 
   setDefaultState() {
-    this.setState(Mocks.getState("GroupOpened"))
+    this.setState(Mocks.getState("LoggedIn"))
     // this.setState({
     //   HasLoggedIn: false,
     //   NotLoggedIn: {

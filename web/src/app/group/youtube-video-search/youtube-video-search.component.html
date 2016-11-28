@@ -1,0 +1,31 @@
+
+<div class="search-interface" [class.search-open]="isOpen">
+  <div class="search-header">
+    <div class="title">Search</div>
+    <input type="text" class="form-control" placeholder="Search videos" [(ngModel)]="searchInput"
+        (keydown)="$event.keyCode === 13 ? clickSearch() : true">
+  </div>
+  <div class="video-results-list">
+    <div *ngFor="let video of searchResults">
+      <div class="video-result" (click)="clickAddVideo(video)">
+        <div class="video-thumb">
+          <picture>
+            <source [attr.srcset]="video.thumbnails.medium.url" media="(min-width: 700px)">
+            <source [attr.srcset]="video.thumbnails.default.url" media="(max-width: 700px)">
+            <source [attr.srcset]="video.thumbnails.high.url" media="(min-resolution: 100dpi and min-width: 700px)">
+            <source [attr.srcset]="video.thumbnails.medium.url" media="(min-resolution: 100dpi and max-width: 700px)">
+            <img [attr.src]="video.thumbnails.medium.url" [attr.alt]="'Thumbnail for video: ' + video.title">
+          </picture>
+        </div>
+        <div class="video-info">
+          <div class="title">{{ video.title }}</div>
+          <div class="desc">{{ video.desc }}</div>
+        </div>
+        <div>
+          <div class="add-video-indicator">{{ getVideoStatusIndicator(video.id) }}</div>
+        </div>
+      </div>
+    </div>
+    </div>
+  <button class="close-button btn btn-default" (click)="clickCloseSearch()">&times;</button>
+</div>

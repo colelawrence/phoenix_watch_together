@@ -16,13 +16,13 @@ defmodule Rumbl.VideoControllerTest do
   @tag login_as: "max"
   # Specifying a single atom such as `@tag :logged_in`, is equivalent to `@tag logged_in: true`
   test "lists all user's videos on index", %{conn: conn, user: user} do
-    user_video  = insert_video(user, title: "funny cats")
-    other_video = insert_video(insert_user(username: "other"), title: "another video")
+    user_video  = insert_video(user, name: "funny cats")
+    other_video = insert_video(insert_user(username: "other"), name: "another video")
   
     conn = get conn, video_path(conn, :index)
     assert html_response(conn, 200) =~ ~r/Listing videos/
-    assert String.contains?(conn.resp_body, user_video.title)
-    refute String.contains?(conn.resp_body, other_video.title)
+    assert String.contains?(conn.resp_body, user_video.name)
+    refute String.contains?(conn.resp_body, other_video.name)
   end
 
   test "requires user authentication on all actions", %{conn: conn} do
@@ -41,8 +41,8 @@ defmodule Rumbl.VideoControllerTest do
   end
 
   alias Rumbl.Video
-  @valid_attrs %{url: "http://youtu.be", title: "vid", description: "great video"}
-  @invalid_attrs %{title: "invalid"}
+  @valid_attrs %{yt_id: "http://youtu.be", name: "vid", description: "great video"}
+  @invalid_attrs %{name: "invalid"}
 
   defp video_count(query), do: Repo.one(from v in query, select: count(v.id))
 
