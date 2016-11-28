@@ -81,6 +81,20 @@ export class GroupComponent implements OnInit, OnDestroy, DoCheck {
           this.player = new Player("group-video", videoId, () => {
             let seekTo = this.diffStartedAt(this.group.Group.PlayStartedAt)
             this.player.seekTo(seekTo)
+
+            this.player.onstatechange = ({ data: state }) => {
+              console.log("Player State", ["unstarted","ended","playing","paused","buffering",null,"cued"][state+1])
+              switch(state) {
+                case 2:
+                  // console.log("++++STOPPED")
+                  this._groupWriter.pauseAt(this.player.getCurrentTime())
+                  break
+                case 1:
+                  // console.log("++++PLAYING")
+                  this._groupWriter.playAt(this.player.getCurrentTime())
+                  break
+              }
+            }
           })
         }
       } else {

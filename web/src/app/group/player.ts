@@ -6,6 +6,8 @@ export
 class Player {
   player: any
 
+	public onstatechange: ({data: number, target: any}) => void
+
   constructor (domId: string, playerId: string, onReady: Function) {
     if (window["YT"] != null) {
       this.onIframeReady(domId, playerId, onReady)
@@ -25,17 +27,13 @@ class Player {
       width: "420", height: "360", videoId: playerId,
       events: {
         "onReady": (event => onReady(event)),
-        "onStateChange": (event => this.onPlayerStateChange(event))
+        "onStateChange": (evt) => this.onstatechange ? this.onstatechange(evt) : null
       }
     })
   }
 
 	loadVideoId(videoId: string, start_at = 0) {
     this.player.loadVideoById(videoId, start_at / 1000, "default")
-  }
-
-  onPlayerStateChange(event) {
-    console.log("PlayerStateChange", event)
   }
 
   getCurrentTime() {
@@ -49,14 +47,5 @@ class Player {
 	setPlaying(is_playing: boolean) {
     if (is_playing) this.player.playVideo()
     else this.player.pauseVideo()
-  }
-
-  seekToStartedAt(started_at_utc: string) {
-    let utc_ms = Date.parse(started_at_utc)
-    let started_at = new Date(utc_ms)
-		let diff = Date.now() - utc_ms
-		console.log("started_at_utc", started_at)
-		console.log("diff", diff)
-    this.seekTo(diff)
   }
 }

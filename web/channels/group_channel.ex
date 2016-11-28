@@ -56,6 +56,27 @@ defmodule Rumbl.GroupChannel do
     handle_in(event, params, group, user_id, socket)
   end
 
+  def handle_in("player_play", %{ "start_at" => started_at_iso }, group, user_id, socket) do
+    IO.puts "player_play started_at"
+    started_at = Ecto.DateTime.cast! started_at_iso
+    IO.inspect started_at
+    group
+      |> Group.changeset(%{ is_playing: true, started_at: started_at })
+      |> Repo.update!()
+    broadcast! socket, "update_player_play", %{ started_at: started_at, user_id: user_id }
+
+    {:reply, :ok, socket}
+  end
+  def handle_in("player_pause", %{ "pause_at" => paused_at }, group, user_id, socket) do
+    IO.puts "player_pause paused_at"
+    IO.inspect paused_at
+    group
+      |> Group.changeset(%{ is_playing: false, paused_at: paused_at })
+      |> Repo.update!()
+    broadcast! socket, "update_player_pause", %{ paused_at: paused_at, user_id: user_id }
+    {:reply, :ok, socket}
+  end
+
   alias Rumbl.GroupMessage
   def handle_in("new_message", %{"message" => %{ "body" => body }}, group, user_id, socket) do
     changeset =
@@ -119,7 +140,6 @@ defmodule Rumbl.GroupChannel do
         {:reply, {:error, %{errors: changeset}}, socket}
     end
   end
-
   def handle_in("play_next_video", _params, group, user_id, socket) do
     # Get the highest scoring (not archived) proposal for this group
     highest_proposal = Repo.one(

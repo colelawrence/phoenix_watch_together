@@ -62,6 +62,7 @@ export class GroupWriter {
   }
 
   castSkipVote(hasVote: boolean) {
+    // Unused as of now
     let currentState = this._dss.getState()
 
     let skipVote = currentState.LoggedIn.OpenGroup.SkipVote
@@ -84,6 +85,22 @@ export class GroupWriter {
     this.groupChannel.push("play_next_video", {}, 500)
     	.receive("ok", (resp) => log_ok("Play next video ok", resp))
     	.receive("error", (resp) => log_error("Play next video error", resp))
+  }
+
+	pauseAt(pause_at: number) {
+    console.log(`%c Pause: ${pause_at}`, "font-weight: bold")
+
+    this.groupChannel.push("player_pause", { pause_at }, 500)
+    	.receive("ok", (resp) => log_ok("Pausing video ok", resp))
+    	.receive("error", (resp) => log_error("Pausing video error", resp))
+  }
+
+	playAt(start_at: number) {
+    let iso = (new Date(Date.now() - start_at)).toISOString()
+    console.log(`%c Play: ${iso}`, "font-weight: bold")
+    this.groupChannel.push("player_play", { start_at: iso }, 500)
+    	.receive("ok", (resp) => log_ok("Playing video ok", resp))
+    	.receive("error", (resp) => log_error("Playing video error", resp))
   }
 
   proposeVideo(video: R.Video) {
@@ -162,7 +179,8 @@ export class GroupWriter {
   }
 
 	// PLAY
-	private onUpdatePlayerPlay({started_at}: {started_at: string}) {
+	private onUpdatePlayerPlay({started_at, user_id}: {started_at: string, user_id: number}) {
+    console.log("From Server PLAY")
     let currentState = this._dss.getState()
     currentState.LoggedIn.OpenGroup.Group.State = "play"
     currentState.LoggedIn.OpenGroup.Group.PlayStartedAt = started_at
@@ -170,7 +188,8 @@ export class GroupWriter {
   }
 
 	// PAUSE
-	private onUpdatePlayerPause({pause_at}: {pause_at: number}) {
+	private onUpdatePlayerPause({pause_at, user_id}: {pause_at: number, user_id: number}) {
+    console.log("From Server PAUSE")
     let currentState = this._dss.getState()
     currentState.LoggedIn.OpenGroup.Group.State = "pause"
     currentState.LoggedIn.OpenGroup.Group.PausePlayerAt = pause_at
