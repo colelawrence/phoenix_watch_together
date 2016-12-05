@@ -1,0 +1,5 @@
+// component styles are encapsulated and only applied to their components
+:host {
+  display: block;
+  padding: 32px;
+}

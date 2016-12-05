@@ -1,0 +1,18 @@
+
+import {
+  Component, Input, Output, EventEmitter
+  // trigger, state, style, transition, animate
+} from '@angular/core';
+
+@Component({
+  selector: 'wt-<%= fileName %>',
+  template: require('./<%= fileName %>.component.html'),
+  styles: [
+    require('./<%= fileName %>.component.scss')
+  ]
+})
+export class <%= fileNameC %>Component {
+	<%_ inputArr.forEach((input) => { %>
+  @Input() <%= input %>: any
+  <%_ }) _%>
+}
