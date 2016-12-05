@@ -6,20 +6,22 @@ module.exports = {
     "inputArr"
   ],
   onComplete: (vars) => {
-    console.log('Now import this component using:')
-    console.log('')
-    console.log(`   import { ${vars.fileNameC}Component } from './${vars.fileName}/${vars.fileName}.component'`)
-    console.log('')
-
     let inputStr = ''
     let selectorStr = 'wt-' + vars.fileName
     if (vars.inputArr.length) {
       inputStr = ` ${vars.inputArr.map(i => `[${i}]="${i}"`).join(' ')}`
     }
+// log usagemessage
+    console.log(`
+Now import this component using:
 
-    console.log('and use it with:')
-    console.log('')
-    console.log(`   <${selectorStr}${inputStr}></${selectorStr}>`)
-    console.log('')
+   import { ${vars.fileNameC}Component } from './${vars.fileName}/${vars.fileName}.component'
+
+and use it with:
+
+   <${selectorStr}${inputStr}></${selectorStr}>
+
+`
+    )
   }
 }
