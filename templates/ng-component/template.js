@@ -1,7 +1,6 @@
 module.exports = {
   filesDir: './files',
-  // to be used in the future
-  baseDir: './web/src/app',
+  outDir: './web/src',
   variables: [
     "fileNameC",
     "inputArr"
