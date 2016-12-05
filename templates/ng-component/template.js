@@ -8,7 +8,7 @@ module.exports = {
   onComplete: (vars) => {
     console.log('Now import this component using:')
     console.log('')
-    console.log(`   import { ${vars.fileNameC}Component } from './${vars.fileName}/${vars.fileName}.component.ts'`)
+    console.log(`   import { ${vars.fileNameC}Component } from './${vars.fileName}/${vars.fileName}.component'`)
     console.log('')
 
     let inputStr = ''
