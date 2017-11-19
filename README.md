@@ -1,8 +1,11 @@
 # Watch Together
 
-[![Build Status](https://travis-ci.org/ZombieHippie/phoenix-rumbl-tutorial.svg?branch=master)](https://travis-ci.org/ZombieHippie/phoenix-rumbl-tutorial)
+[![Build Status](https://travis-ci.org/colelawrence/phoenix_watch_together.svg?branch=master)](https://travis-ci.org/colelawrence/phoenix_watch_together)
 
 Watch YouTube videos with multiple people, and then vote for the next video to be played!
+
+[![Youtube Screencapture](https://user-images.githubusercontent.com/2925395/32995402-24bd4854-cd39-11e7-92b0-2e4d6603d9b1.png)](https://youtu.be/auam8-ga6gE)
+
 
 This is based on another website I forget the name of, but it was a cool idea to try and recreate using Phoenix.
 
